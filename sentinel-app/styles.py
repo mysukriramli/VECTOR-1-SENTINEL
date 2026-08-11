@@ -13,7 +13,7 @@ def apply_custom_styles():
 
     /* 2. MAIN CONTAINER & BACKGROUND GRID */
     .main .block-container {
-        padding-top: 4.0rem !important;
+        padding-top: 3.8rem !important;
         padding-bottom: 2.5rem !important;
         max-width: 95% !important;
     }
@@ -33,63 +33,110 @@ def apply_custom_styles():
     #MainMenu {visibility: hidden !important;}
     .stDeployButton {display: none !important;}
 
-    /* 4. DYNAMIC ROLE/TIER VISUAL BANNERS */
-    .tier-banner-public {
-        background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-        border: 1px solid #A7F3D0;
-        border-left: 6px solid #10B981;
-        padding: 12px 18px;
+    /* 4. LIVE INTERDICTION TICKER BANNER */
+    .live-ticker-container {
+        background: #0F172A;
+        color: #F8FAFC;
         border-radius: 10px;
-        color: #065F46;
-        font-weight: 600;
-        margin-bottom: 1rem;
+        padding: 10px 18px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 1.2rem;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+        border: 1px solid #1E293B;
+    }
+    .ticker-tag {
+        background: #2563EB;
+        color: #FFFFFF;
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: 6px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    .ticker-text {
+        font-size: 0.85rem;
+        font-family: 'JetBrains Mono', monospace;
+        color: #94A3B8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .tier-banner-gov {
-        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-        border: 1px solid #BFDBFE;
-        border-left: 6px solid #2563EB;
-        padding: 12px 18px;
-        border-radius: 10px;
-        color: #1E3A8A;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .tier-banner-admin {
-        background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-        border: 1px solid #FECACA;
-        border-left: 6px solid #EF4444;
-        padding: 12px 18px;
-        border-radius: 10px;
-        color: #991B1B;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    /* 5. HERO BOX DEFINITION */
-    .hero-container {
-        background: #FFFFFF;
+    /* 5. HERO NEXUS CONTAINER */
+    .hero-nexus {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%);
         border: 1px solid #E2E8F0;
+        border-left: 6px solid #1E3A8A;
         border-radius: 14px;
         padding: 24px 28px;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+        margin-bottom: 1.2rem;
     }
-    .hero-title {
-        font-size: 1.8rem;
+    .hero-nexus-title {
+        font-size: 1.85rem;
         font-weight: 800;
         color: #0F172A;
         letter-spacing: -0.5px;
         margin-bottom: 6px;
     }
-    .hero-subtitle {
-        font-size: 1.0rem;
+    .hero-nexus-sub {
+        font-size: 0.98rem;
         color: #475569;
         line-height: 1.5;
     }
 
-    /* 6. SIDEBAR LIGHT THEME */
+    /* 6. DYNAMIC TIER BADGES */
+    .tier-badge-public {
+        background: #ECFDF5;
+        border: 1px solid #A7F3D0;
+        color: #065F46;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .tier-badge-gov {
+        background: #EFF6FF;
+        border: 1px solid #BFDBFE;
+        color: #1E3A8A;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .tier-badge-admin {
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+        color: #991B1B;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    /* 7. GLASSMORPHISM METRIC CARDS */
+    div[data-testid="stMetric"] {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(8px) !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 12px !important;
+        padding: 16px 20px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03) !important;
+        transition: all 0.25s ease !important;
+    }
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-3px) !important;
+        border-color: #93C5FD !important;
+        box-shadow: 0 10px 20px -3px rgba(37, 99, 235, 0.1) !important;
+    }
+
+    /* 8. SIDEBAR LIGHT STYLING */
     section[data-testid="stSidebar"] {
         background-color: #FFFFFF !important;
         border-right: 1px solid #E2E8F0 !important;
@@ -97,30 +144,9 @@ def apply_custom_styles():
     section[data-testid="stSidebar"] * {
         color: #0F172A !important;
     }
-
     section[data-testid="stSidebar"] div[role="radiogroup"] label[data-checked="true"] {
         background-color: #EFF6FF !important;
         border-left: 4px solid #1E3A8A !important;
-    }
-
-    /* 7. FORM INPUTS & SELECTBOXES */
-    div[data-baseweb="input"] > div,
-    div[data-baseweb="select"] > div,
-    input {
-        background-color: #FFFFFF !important;
-        color: #0F172A !important;
-        border: 1px solid #CBD5E1 !important;
-        border-radius: 8px !important;
-        font-weight: 600 !important;
-    }
-
-    /* 8. METRIC CARDS */
-    div[data-testid="stMetric"] {
-        background-color: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 12px !important;
-        padding: 16px 20px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03) !important;
     }
 
     /* 9. SHIMMER BUTTONS */
@@ -138,7 +164,7 @@ def apply_custom_styles():
         box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3) !important;
     }
 
-    /* Pulse Dot for Header */
+    /* Pulse Status Marker */
     .intel-status-pill {
         display: inline-flex;
         align-items: center;
