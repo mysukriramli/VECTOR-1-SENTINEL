@@ -7,7 +7,7 @@ def render_sidebar():
     
     # Path resolution for local logo file
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    logo_path = os.path.join(base_dir, "logo.png")
+    logo_path = os.path.join(base_dir, "logo.svg")
     
     if os.path.exists(logo_path):
         st.sidebar.image(logo_path, width=110)
