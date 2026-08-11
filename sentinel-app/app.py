@@ -1,7 +1,7 @@
 import os
 import sys
 
-# Resolve current directory on Streamlit Cloud for subfolder module imports
+# Resolve current directory on Streamlit Cloud
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import streamlit as st
@@ -22,7 +22,6 @@ from pages_views.admin_governance import render_admin_governance_page
 from pages_views.faq import render_faq_page
 from pages_views.contact import render_contact_page
 
-# Page Window Configuration
 st.set_page_config(
     page_title="SENTINEL - Multi-MEA Trade Intelligence",
     page_icon="🛡️",
@@ -30,29 +29,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Apply UI Styling & Initialize Session State
 apply_custom_styles()
 init_auth_session()
 
-# Render Navigation Sidebar
 active_page = render_sidebar()
 
-# Clean Executive Header Banner
-col_h1, col_h2 = st.columns([3, 1])
-with col_h1:
-    st.markdown("""
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
-        <span class="main-header">SENTINEL Platform</span>
-        <span class="intel-status-pill"><span class="pulse-dot"></span> LIVE INTEL ENGINE</span>
-    </div>
-    <div class="sub-header">National Environmental Security & Trade Compliance Engine</div>
-    """, unsafe_allow_html=True)
-with col_h2:
-    st.info(f"Current Access Tier:\n**{st.session_state['user_role']}**")
+# Clean Header Banner
+st.markdown("""
+<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+    <span style="font-size:2.2rem; font-weight:800; color:#0F172A;">SENTINEL Platform</span>
+    <span class="intel-status-pill"><span class="pulse-dot"></span> LIVE INTEL ENGINE</span>
+</div>
+""", unsafe_allow_html=True)
 
-st.markdown("---")
-
-# Page Dispatcher Router
+# Page Routing
 if "🏠 Home Overview" in active_page:
     render_home_page()
 elif "ℹ️ About SENTINEL" in active_page:
