@@ -1,7 +1,6 @@
 import os
 import sys
 
-# Resolve current directory on Streamlit Cloud
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import streamlit as st
@@ -23,8 +22,7 @@ from pages_views.faq import render_faq_page
 from pages_views.contact import render_contact_page
 
 st.set_page_config(
-    page_title="SENTINEL - Multi-MEA Trade Intelligence",
-    page_icon="🛡️",
+    page_title="SENTINEL Platform",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -34,34 +32,39 @@ init_auth_session()
 
 active_page = render_sidebar()
 
-# Clean Header Banner
-st.markdown("""
-<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-    <span style="font-size:2.2rem; font-weight:800; color:#0F172A;">SENTINEL Platform</span>
-    <span class="intel-status-pill"><span class="pulse-dot"></span> LIVE INTEL ENGINE</span>
-</div>
-""", unsafe_allow_html=True)
+col_h1, col_h2 = st.columns([3, 1])
+with col_h1:
+    st.markdown("""
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+        <span class="main-header">SENTINEL Platform</span>
+        <span class="intel-status-pill"><span class="pulse-dot"></span> System Active</span>
+    </div>
+    <div class="sub-header">National Environmental Security & Trade Compliance Engine</div>
+    """, unsafe_allow_html=True)
+with col_h2:
+    st.info(f"Current Access Tier:\n**{st.session_state['user_role']}**")
 
-# Page Routing
-if "🏠 Home Overview" in active_page:
+st.markdown("---")
+
+if "Home Overview" in active_page:
     render_home_page()
-elif "ℹ️ About SENTINEL" in active_page:
+elif "About SENTINEL" in active_page:
     render_about_page()
-elif "🗺️ Public Threat Map" in active_page:
+elif "Public Threat Map" in active_page:
     render_public_insights_page()
-elif "🔍 Multi-MEA Live Scanner" in active_page:
+elif "Live Scanner" in active_page:
     render_anomaly_inspector_page()
-elif "📈 Data Studio & Catalogue" in active_page:
+elif "Data Studio" in active_page:
     render_datastudio_catalog_page()
-elif "🔌 Agency Embed Portal" in active_page:
+elif "Embed Portal" in active_page:
     render_embed_portal_page()
-elif "🤖 AI Legal Copilot" in active_page:
+elif "AI Legal Copilot" in active_page:
     render_copilot_assistant_page()
-elif "🎓 Capacity Training Modules" in active_page:
+elif "Training Modules" in active_page:
     render_training_module_page()
-elif "⚙️ Admin Model Hub" in active_page:
+elif "Admin Model Hub" in active_page:
     render_admin_governance_page()
-elif "❓ Guidance & FAQ" in active_page:
+elif "Guidance & FAQ" in active_page:
     render_faq_page()
-elif "📞 Incident Escalation" in active_page:
+elif "Incident Escalation" in active_page:
     render_contact_page()
