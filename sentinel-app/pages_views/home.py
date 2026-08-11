@@ -11,10 +11,11 @@ def render_home_page():
     <div style="position: relative; width: 100%; height: 320px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%); border: 1px solid #CBD5E1; margin-bottom: 1.5rem;">
         <canvas id="neuralCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 90%;">
-            <h1 style="font-size: 2.2rem; font-weight: 800; color: #1A365D; margin: 0; letter-spacing: -0.5px;">SENTINEL Intelligence Nexus</h1>
+            <h1 style="font-size: 2.2rem; font-weight: 800; color: #1A365D; margin: 0; letter-spacing: -0.5px;">SENTINEL Trade Intelligence</h1>
             <p style="font-size: 1.05rem; color: #334155; margin-top: 10px; font-weight: 500;">National Environmental Security & Trade Compliance Engine</p>
             <div style="margin-top: 20px;">
-                <span style="background: rgba(255, 255, 255, 0.9); color: #1E3A8A; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; border: 1px solid #BFDBFE; text-transform: uppercase; letter-spacing: 0.5px;">AI-Powered Threat Detection Active</span>
+                <span style="background: rgba(255, 255, 255, 0.9); color: #1E3A8A; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; border: 1px solid #BFDBFE; text-transform: uppercase; letter-spacing: 0.5px;">Smart Environmental Nexus for Trade Intelligence and Networked Enforcement Logic 
+</span>
             </div>
         </div>
     </div>
