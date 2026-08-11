@@ -12,7 +12,7 @@ def render_home_page():
     <div style="position: relative; width: 100%; height: 320px; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, #F8FAFC 0%, #E0F2FE 100%); border: 1px solid #BAE6FD; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1); margin-bottom: 1.5rem;">
         <canvas id="neuralCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 90%;">
-            <h1 style="font-size: 2.5rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(255,255,255,0.8);">🛡️ SENTINEL Intelligence Nexus</h1>
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(255,255,255,0.8);">🛡️ SENTINEL Trade Intelligence</h1>
             <p style="font-size: 1.1rem; color: #334155; margin-top: 10px; font-weight: 500;">National Environmental Security & Trade Compliance Engine</p>
             <div style="margin-top: 20px;">
                 <span style="background: rgba(255, 255, 255, 0.8); color: #0284C7; padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid #7DD3FC; backdrop-filter: blur(4px);">✨ Smart Environmental Nexus for Trade Intelligence and Networked 
