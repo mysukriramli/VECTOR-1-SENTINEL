@@ -37,13 +37,14 @@ init_auth_session()
 # Render Navigation Sidebar
 active_page = render_sidebar()
 
-# Header Accent Banner with Animated Pulse Status Pill
+# Header Accent Banner with PSAINC2026 Badges
 col_h1, col_h2 = st.columns([3, 1])
 with col_h1:
     st.markdown("""
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
         <span class="main-header">SENTINEL Platform</span>
-        <span class="intel-status-pill"><span class="pulse-dot"></span> LIVE INTEL ENGINE</span>
+        <span class="psainc-badge">🏆 PSAINC2026: VECTOR 1</span>
+        <span class="intel-status-pill"><span class="pulse-dot"></span> JDN / NAIO COMPLIANT</span>
     </div>
     <div class="sub-header">National Environmental Security & Trade Compliance Engine</div>
     """, unsafe_allow_html=True)
