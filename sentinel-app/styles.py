@@ -38,25 +38,59 @@ def apply_custom_styles():
     section[data-testid="stSidebar"] * {
         color: #F8FAFC !important;
     }
-    section[data-testid="stSidebar"] .stSelectbox label {
-        color: #94A3B8 !important;
-        font-weight: 600;
+
+    /* 6. BASEWEB DROPDOWN & SELECTBOX TEXT FIX */
+    /* Sidebar Selectbox Container */
+    section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+        background-color: #1E293B !important;
+        border: 1px solid #334155 !important;
+        border-radius: 8px !important;
+    }
+    section[data-testid="stSidebar"] div[data-baseweb="select"] span {
+        color: #F8FAFC !important;
     }
 
-    /* 6. METRIC CARD CONTAINERS */
+    /* Main Content Area Selectbox Container */
+    div[data-testid="stMain"] div[data-baseweb="select"] > div {
+        background-color: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 8px !important;
+    }
+    div[data-testid="stMain"] div[data-baseweb="select"] span {
+        color: #0F172A !important;
+    }
+
+    /* Dropdown Options Popover Menu (Fixes Invisible Text) */
+    div[data-baseweb="popover"] {
+        background-color: #FFFFFF !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    }
+    div[data-baseweb="popover"] * {
+        color: #0F172A !important;
+        background-color: #FFFFFF !important;
+    }
+    div[data-baseweb="popover"] li[role="option"]:hover {
+        background-color: #EFF6FF !important;
+    }
+    div[data-baseweb="popover"] li[aria-selected="true"] {
+        background-color: #DBEAFE !important;
+        font-weight: 600 !important;
+    }
+
+    /* 7. METRIC CARD CONTAINERS */
     div[data-testid="stMetric"] {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
         border-radius: 12px !important;
         padding: 16px 20px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.85rem !important;
         font-weight: 700 !important;
         color: #64748B !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
     }
     div[data-testid="stMetricValue"] {
         font-size: 1.8rem !important;
@@ -64,7 +98,7 @@ def apply_custom_styles():
         color: #0F172A !important;
     }
 
-    /* 7. CUSTOM BUTTONS */
+    /* 8. BUTTONS */
     .stButton>button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -72,30 +106,6 @@ def apply_custom_styles():
         color: white !important;
         border: none !important;
         padding: 0.6rem 1.2rem !important;
-        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2) !important;
-        transition: all 0.2s ease-in-out !important;
-    }
-    .stButton>button:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 6px 12px -2px rgba(37, 99, 235, 0.3) !important;
-    }
-
-    /* 8. BADGES & PILLS */
-    .badge-active {
-        background-color: #D1FAE5 !important;
-        color: #065F46 !important;
-        padding: 4px 10px !important;
-        border-radius: 12px !important;
-        font-size: 0.82rem !important;
-        font-weight: 700 !important;
-    }
-    .badge-dev {
-        background-color: #FEF3C7 !important;
-        color: #92400E !important;
-        padding: 4px 10px !important;
-        border-radius: 12px !important;
-        font-size: 0.82rem !important;
-        font-weight: 700 !important;
     }
 
     /* 9. HEADERS */
@@ -103,7 +113,6 @@ def apply_custom_styles():
         font-size: 2.2rem;
         font-weight: 800;
         color: #0F172A;
-        letter-spacing: -0.5px;
         margin-bottom: 0rem;
     }
     .sub-header {
