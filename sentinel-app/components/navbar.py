@@ -3,9 +3,6 @@ import streamlit as st
 from components.auth import set_user_role
 
 def render_sidebar():
-    """Renders sidebar navigation, brand logo, and demo role switcher."""
-    
-    # Path resolution for local logo file
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     logo_path = os.path.join(base_dir, "logo.png")
     
@@ -14,13 +11,13 @@ def render_sidebar():
     elif os.path.exists("logo.png"):
         st.sidebar.image("logo.png", width=110)
     else:
-        st.sidebar.markdown("## 🛡️ VECTOR-1")
+        st.sidebar.markdown("## VECTOR-1")
 
     st.sidebar.title("SENTINEL Engine")
     st.sidebar.caption("Smart Environmental Nexus for Trade Intelligence")
 
     st.sidebar.markdown("---")
-    st.sidebar.subheader("👤 Demo Role Switcher")
+    st.sidebar.subheader("Demo Role Switcher")
     
     current_role = st.session_state.get("user_role", "Gov Agency")
     role_options = ["Public (Free)", "Gov Agency", "Admin"]
@@ -36,24 +33,25 @@ def render_sidebar():
     st.sidebar.markdown("---")
     
     pages = [
-        "🏠 Home Overview",
-        "ℹ️ About SENTINEL & MEAs",
-        "🗺️ Public Threat Map"
+        "Home Overview",
+        "About SENTINEL",
+        "Publications & Research",
+        "Public Threat Map"
     ]
     
     if selected_role in ["Gov Agency", "Admin"]:
         pages.extend([
-            "🔍 Multi-MEA Live Scanner",
-            "📈 Data Studio & Catalogue",
-            "🔌 Agency Embed Portal",
-            "🤖 AI Legal Copilot",
-            "🎓 Capacity Training Modules"
+            "Live Scanner",
+            "Data Studio & Catalogue",
+            "Embed Portal",
+            "AI Legal Copilot",
+            "Training Modules"
         ])
         
     if selected_role == "Admin":
-        pages.append("⚙️ Admin Model Hub")
+        pages.append("Admin Model Hub")
         
-    pages.extend(["❓ Guidance & FAQ", "📞 Incident Escalation"])
+    pages.extend(["Guidance & FAQ", "Incident Escalation"])
     
     selected_page = st.sidebar.radio("Navigation Menu", pages)
     return selected_page
