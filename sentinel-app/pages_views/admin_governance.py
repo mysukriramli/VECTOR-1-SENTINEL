@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 from components.auth import can_download_joblib
 
 def get_file_sha256(filepath):
@@ -130,7 +129,6 @@ def render_admin_governance_page():
             ["Plastic Scrap Forensic Pipeline", "ODS Refrigerant Anomaly Pipeline", "E-Waste Misdeclaration Pipeline"]
         )
 
-        # Mock Feature Importance Data
         if "Plastic" in selected_xai_model:
             feature_data = {
                 "Feature": ["Unit Price Ratio (USD/kg)", "Weight-to-Volume Density", "Importer Risk Index", "Origin Country Risk", "HS Code Discrepancy"],
@@ -185,7 +183,6 @@ def render_admin_governance_page():
         with cal_col2:
             st.markdown("##### Simulated Confusion Matrix Impact")
             
-            # Confusion Matrix Simulation based on slider threshold
             tp = int(320 * (100 - risk_threshold) / 40)
             fp = int(45 * (100 - risk_threshold) / 40)
             fn = int(20 * risk_threshold / 60)
@@ -195,9 +192,13 @@ def render_admin_governance_page():
             x_labels = ['Flagged High Risk', 'Cleared Normal']
             y_labels = ['Actual Anomaly', 'Actual Compliant']
 
-            fig_cm = go.Figure(data=go.Heatmap(
-                z=z_data, x=x_labels, y=y_labels,
-                colorscale='Blues', annot=True, texttemplate="%{z}"
-            ))
+            # Fixed Plotly Heatmap call using px.imshow
+            fig_cm = px.imshow(
+                z_data,
+                x=x_labels,
+                y=y_labels,
+                color_continuous_scale='Blues',
+                text_auto=True
+            )
             fig_cm.update_layout(height=300, margin=dict(l=20, r=20, t=30, b=20))
             st.plotly_chart(fig_cm, use_container_width=True)
