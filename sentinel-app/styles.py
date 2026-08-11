@@ -15,7 +15,7 @@ def apply_custom_styles():
     #MainMenu {visibility: hidden !important;}
     .stDeployButton {display: none !important;}
 
-    /* 3. INCREASE TOP PADDING TO FIX CROPPED HEADER TEXT */
+    /* 3. TOP PADDING FIX FOR HEADER TEXT */
     .block-container {
         padding-top: 4.5rem !important;
         padding-bottom: 2rem !important;
@@ -27,16 +27,66 @@ def apply_custom_styles():
         background-color: #F8FAFC !important;
     }
 
-    /* 5. EXECUTIVE DARK SIDEBAR */
+    /* 5. CLEAN LIGHT EXECUTIVE SIDEBAR (MATCHES LOGO PALETTE) */
     section[data-testid="stSidebar"] {
-        background-color: #0F172A !important;
-        border-right: 1px solid #1E293B !important;
+        background-color: #FFFFFF !important;
+        border-right: 1px solid #E2E8F0 !important;
     }
-    section[data-testid="stSidebar"] * {
-        color: #F8FAFC !important;
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3,
+    section[data-testid="stSidebar"] .stMarkdown p {
+        color: #0F172A !important;
+    }
+    section[data-testid="stSidebar"] .stCaption {
+        color: #64748B !important;
+    }
+    section[data-testid="stSidebar"] hr {
+        border-color: #E2E8F0 !important;
+        margin: 1rem 0 !important;
     }
 
-    /* 6. INPUT FIELDS & SELECTBOXES */
+    /* 6. SIDEBAR ROLE SWITCHER SELECTBOX */
+    section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+        background-color: #F8FAFC !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 8px !important;
+    }
+    section[data-testid="stSidebar"] div[data-baseweb="select"] span {
+        color: #0F172A !important;
+        font-weight: 600 !important;
+    }
+    section[data-testid="stSidebar"] label {
+        color: #334155 !important;
+        font-weight: 600 !important;
+    }
+
+    /* 7. NAVIGATION RADIO MENU ITEMS */
+    section[data-testid="stSidebar"] div[role="radiogroup"] label {
+        background-color: transparent !important;
+        padding: 8px 12px !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease-in-out !important;
+        margin-bottom: 2px !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] label * {
+        color: #334155 !important;
+        font-weight: 500 !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+        background-color: #F1F5F9 !important;
+    }
+    /* Active Selected Page Pill */
+    section[data-testid="stSidebar"] div[role="radiogroup"] label[data-checked="true"] {
+        background-color: #EFF6FF !important;
+        border-left: 4px solid #1E3A8A !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] label[data-checked="true"] * {
+        color: #1E3A8A !important;
+        font-weight: 700 !important;
+    }
+
+    /* 8. MAIN CONTENT INPUT FIELDS & SELECTBOXES */
     div[data-baseweb="input"] > div,
     div[data-baseweb="select"] > div,
     div[data-testid="stNumberInput"] input,
@@ -55,6 +105,7 @@ def apply_custom_styles():
         border: 1px solid #CBD5E1 !important;
     }
 
+    /* Dropdown Options Popover Menu */
     div[data-baseweb="popover"] {
         background-color: #FFFFFF !important;
         border-radius: 8px !important;
@@ -68,7 +119,7 @@ def apply_custom_styles():
         background-color: #EFF6FF !important;
     }
 
-    /* 7. METRIC CARDS */
+    /* 9. METRIC CARDS */
     div[data-testid="stMetric"] {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
@@ -88,7 +139,7 @@ def apply_custom_styles():
         color: #0F172A !important;
     }
 
-    /* 8. BUTTONS */
+    /* 10. BUTTONS */
     .stButton>button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -98,7 +149,7 @@ def apply_custom_styles():
         padding: 0.6rem 1.2rem !important;
     }
 
-    /* 9. HEADERS */
+    /* 11. HEADERS */
     .main-header {
         font-size: 2.2rem;
         font-weight: 800;
