@@ -71,7 +71,6 @@ def render_anomaly_inspector_page():
         st.markdown("##### 📊 Upload Batch Trade Declarations (CSV)")
         st.caption("Upload a `.csv` manifest file containing multiple shipment entries to run automated ML anomaly scans across all rows.")
 
-        # Sample Template Downloader
         sample_csv_data = "Declaration_ID,HS_Code,Unit_Price_USD,Weight_Kg,Volume_M3\nDEC-2026-001,3915.10,0.15,25000,65\nDEC-2026-002,3915.20,1.20,18000,42\nDEC-2026-003,2903.42,4.50,3000,12\nDEC-2026-004,8549.21,0.22,41000,80"
         st.download_button(
             label="📥 Download Sample CSV Template",
@@ -104,7 +103,6 @@ def render_anomaly_inspector_page():
                         anomaly_flags = []
 
                         for _, row in df.iterrows():
-                            # Extract or default numeric parameters
                             p = float(row.get("Unit_Price_USD", 0.5))
                             w = float(row.get("Weight_Kg", 10000))
                             v = float(row.get("Volume_M3", 30))
@@ -119,7 +117,6 @@ def render_anomaly_inspector_page():
                         st.markdown("##### Batch Inspection Results")
                         st.dataframe(df, use_container_width=True)
 
-                        # Export Results
                         csv_output = df.to_csv(index=False)
                         st.download_button(
                             label="📥 Download Flagged Batch Report (CSV)",
@@ -151,7 +148,7 @@ def render_anomaly_inspector_page():
             with col_doc1:
                 st.markdown("##### Uploaded Document Preview")
                 if "image" in uploaded_doc.type:
-                    st.image(uploaded_doc, use_column_width=True)
+                    st.image(uploaded_doc, use_container_width=True)
                 else:
                     st.info("📄 PDF Document Received & Ready for OCR Processing.")
 
@@ -159,7 +156,6 @@ def render_anomaly_inspector_page():
                 st.markdown("##### Extracted OCR Metadata")
                 if st.button("⚡ Run OCR Text Extraction", type="primary", key="btn_ocr"):
                     with st.spinner("Extracting text fields & cross-referencing HS Code catalog..."):
-                        # Simulated OCR Extraction JSON
                         ocr_data = {
                             "Document_Type": "Customs K1 Import Declaration",
                             "Declared_HS_Code": "3915.10 (Plastic Waste)",
