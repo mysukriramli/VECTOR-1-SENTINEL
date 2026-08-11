@@ -10,27 +10,45 @@ def apply_custom_styles():
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
 
-    /* 2. HIDE STREAMLIT DEFAULT CHROME & FOOTER */
-    header {visibility: hidden !important;}
+    /* 2. HIDE STREAMLIT BRANDING FOOTER & TOOLBARS */
     footer {visibility: hidden !important;}
     #MainMenu {visibility: hidden !important;}
     .stDeployButton {display: none !important;}
     div[data-testid="stDecoration"] {display: none !important;}
-    div[data-testid="stToolbar"] {visibility: hidden !important;}
 
-    /* 3. OPTIMIZE MAIN CONTAINER PADDING */
+    /* 3. KEEP TOP-LEFT SIDEBAR TOGGLE BUTTON (>) VISIBLE & STYLED */
+    header[data-testid="stHeader"] {
+        background-color: transparent !important;
+        z-index: 100 !important;
+    }
+    /* Hide right-side header buttons while preserving left sidebar toggle button */
+    header[data-testid="stHeader"] div[data-testid="stToolbar"] {
+        visibility: hidden !important;
+    }
+    div[data-testid="collapsedControl"] {
+        visibility: visible !important;
+        color: #0F172A !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 8px !important;
+        margin-top: 8px !important;
+        margin-left: 8px !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+    }
+
+    /* 4. OPTIMIZE MAIN CONTAINER PADDING */
     .block-container {
-        padding-top: 1.5rem !important;
+        padding-top: 2rem !important;
         padding-bottom: 2rem !important;
         max-width: 95% !important;
     }
 
-    /* 4. MAIN APPLICATION BACKGROUND */
+    /* 5. MAIN APPLICATION BACKGROUND */
     .stApp {
         background-color: #F8FAFC !important;
     }
 
-    /* 5. EXECUTIVE DARK SIDEBAR STYLING */
+    /* 6. EXECUTIVE DARK SIDEBAR STYLING */
     section[data-testid="stSidebar"] {
         background-color: #0F172A !important;
         border-right: 1px solid #1E293B !important;
@@ -39,8 +57,7 @@ def apply_custom_styles():
         color: #F8FAFC !important;
     }
 
-    /* 6. BASEWEB DROPDOWN & SELECTBOX TEXT FIX */
-    /* Sidebar Selectbox Container */
+    /* 7. DROPDOWN & SELECTBOX TEXT FIX */
     section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
         background-color: #1E293B !important;
         border: 1px solid #334155 !important;
@@ -50,7 +67,6 @@ def apply_custom_styles():
         color: #F8FAFC !important;
     }
 
-    /* Main Content Area Selectbox Container */
     div[data-testid="stMain"] div[data-baseweb="select"] > div {
         background-color: #FFFFFF !important;
         border: 1px solid #CBD5E1 !important;
@@ -60,7 +76,6 @@ def apply_custom_styles():
         color: #0F172A !important;
     }
 
-    /* Dropdown Options Popover Menu (Fixes Invisible Text) */
     div[data-baseweb="popover"] {
         background-color: #FFFFFF !important;
         border-radius: 8px !important;
@@ -73,12 +88,8 @@ def apply_custom_styles():
     div[data-baseweb="popover"] li[role="option"]:hover {
         background-color: #EFF6FF !important;
     }
-    div[data-baseweb="popover"] li[aria-selected="true"] {
-        background-color: #DBEAFE !important;
-        font-weight: 600 !important;
-    }
 
-    /* 7. METRIC CARD CONTAINERS */
+    /* 8. METRIC CARD CONTAINERS */
     div[data-testid="stMetric"] {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
@@ -98,7 +109,7 @@ def apply_custom_styles():
         color: #0F172A !important;
     }
 
-    /* 8. BUTTONS */
+    /* 9. BUTTONS */
     .stButton>button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -108,7 +119,7 @@ def apply_custom_styles():
         padding: 0.6rem 1.2rem !important;
     }
 
-    /* 9. HEADERS */
+    /* 10. HEADERS */
     .main-header {
         font-size: 2.2rem;
         font-weight: 800;
