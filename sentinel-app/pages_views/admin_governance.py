@@ -14,33 +14,34 @@ def get_file_sha256(filepath):
             for byte_block in iter(lambda: f.read(4096), b""):
                 sha256_hash.update(byte_block)
         return sha256_hash.hexdigest()
-    return "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" # Fallback hash
+    return "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 def render_admin_governance_page():
-    st.subheader("⚙️ Admin Model Governance & Asset Registry Hub")
+    st.subheader("⚙️ Admin Model Governance & Enterprise Asset Registry")
     
     # Access Control Gate
     if not can_download_joblib():
-        st.error("⛔ Access Restricted: Model Governance & Binary Management requires **Admin Tier** credentials.")
+        st.error("⛔ Access Restricted: Model Governance & Data Hub management requires **Admin Tier** credentials.")
         st.info("Use the sidebar Demo Role Switcher to switch your role to **Admin**.")
         return
 
-    st.caption("Manage model artifacts, inspect feature importance, verify SHA-256 chain-of-custody hashes, and calibrate risk thresholds.")
+    st.caption("Manage model artifacts, inspect BigQuery data catalogues (2020–2026), verify SHA-256 integrity, and calibrate risk thresholds.")
 
     # Top Asset Summary Metrics
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Total Model Assets", "3 Active / 2 Dev", "Multi-MEA Coverage")
+    m1.metric("BigQuery Data Corpus", "18.4 TB", "2020–2026 Archived")
     m2.metric("Asset Valuation / ROI", "RM 42.8M", "Prevented Trade Fraud")
     m3.metric("Avg Pipeline F1-Score", "94.2%", "Isolation Forest Engine")
-    m4.metric("Governance Status", "Audited & Signed", "ISO/IEC 42001 Compliant")
+    m4.metric("Governance Standard", "Audited & Signed", "ISO/IEC 42001 & SPA 2/2021")
 
     st.markdown("---")
 
-    # Governance Operations Tabs
-    tab_registry, tab_xai, tab_calibrate = st.tabs([
+    # Governance Operations Tabs (4 Tabs)
+    tab_registry, tab_xai, tab_calibrate, tab_bigquery = st.tabs([
         "🏛️ Model Asset Registry & Signatures", 
         "🔬 Explainable AI (XAI) & Feature Weights", 
-        "⚖️ Threshold Calibration & Drift Control"
+        "⚖️ Threshold Calibration & Drift Control",
+        "🗄️ BigQuery Data Hub & Enterprise Catalogue"
     ])
 
     # --------------------------------------------------------------------------
@@ -103,7 +104,6 @@ def render_admin_governance_page():
                     st.metric("F1-Accuracy Score", m["f1"])
                     st.caption(f"Last Trained: {m['trained']}")
                     
-                    # Binary Download Button
                     dummy_bytes = b"SENTINEL_JOB_LIB_BINARY_MOCK_DATA"
                     if os.path.exists(m['file']):
                         with open(m['file'], "rb") as f:
@@ -192,7 +192,6 @@ def render_admin_governance_page():
             x_labels = ['Flagged High Risk', 'Cleared Normal']
             y_labels = ['Actual Anomaly', 'Actual Compliant']
 
-            # Fixed Plotly Heatmap call using px.imshow
             fig_cm = px.imshow(
                 z_data,
                 x=x_labels,
@@ -202,3 +201,89 @@ def render_admin_governance_page():
             )
             fig_cm.update_layout(height=300, margin=dict(l=20, r=20, t=30, b=20))
             st.plotly_chart(fig_cm, use_container_width=True)
+
+    # --------------------------------------------------------------------------
+    # TAB 4: BIGQUERY DATA HUB & ENTERPRISE CATALOGUE (2020 - 2026)
+    # --------------------------------------------------------------------------
+    with tab_bigquery:
+        st.markdown("##### 🗄️ BigQuery Data Warehouse & Historical Catalogue (2020–2026)")
+        st.caption("Enterprise data lake hosted on Google Cloud BigQuery, partitioned by declaration date for cross-agency retrieval via MyGDX.")
+
+        bq_m1, bq_m2, bq_m3, bq_m4 = st.columns(4)
+        bq_m1.metric("BigQuery Dataset ID", "sentinel_sec_prod", "asia-southeast1")
+        bq_m2.metric("Total Indexed Rows", "18.42M Records", "2020 – 2026")
+        bq_m3.metric("Partition Strategy", "DAY (declaration_date)", "Active Auto-Pruning")
+        bq_m4.metric("MyGDX Sync Protocol", "Real-Time Push", "OAuth 2.0 Encrypted")
+
+        st.markdown("---")
+        st.markdown("##### 📋 Enterprise Data Table Catalogue")
+
+        catalog_data = [
+            {
+                "Table Name": "sentinel_sec.declarations_2020_2026",
+                "Description": "Historical national trade manifest declarations across all Malaysian sea/air ports.",
+                "Partition Range": "2020-01-01 to 2026-08-11",
+                "Row Count": "14,820,100",
+                "Size (GB)": "12.4 GB",
+                "Access Grants": "JKDM, JAS, MITI, Admin"
+            },
+            {
+                "Table Name": "sentinel_sec.ocr_manifest_extracts",
+                "Description": "Parsed JSON metadata from scanned Customs K1 forms and Bills of Lading.",
+                "Partition Range": "2022-03-15 to 2026-08-11",
+                "Row Count": "2,410,500",
+                "Size (GB)": "3.8 GB",
+                "Access Grants": "JKDM, JAS, Admin"
+            },
+            {
+                "Table Name": "sentinel_sec.mea_violation_audit_logs",
+                "Description": "Judicial legal audit log of flagged anomalies, physical container seizures, and officer decisions.",
+                "Partition Range": "2020-01-01 to 2026-08-11",
+                "Row Count": "382,900",
+                "Size (GB)": "1.1 GB",
+                "Access Grants": "JAS, PERHILITAN, AGC, Admin"
+            },
+            {
+                "Table Name": "sentinel_sec.hs_code_intelligence_index",
+                "Description": "Benchmark global market prices, chemical formulas, and risk weights per HS Code.",
+                "Partition Range": "Static Reference (2026.2)",
+                "Row Count": "18,400",
+                "Size (GB)": "0.2 GB",
+                "Access Grants": "All Agencies (Public/Gov/Admin)"
+            }
+        ]
+
+        df_cat = pd.DataFrame(catalog_data)
+        st.dataframe(df_cat, use_container_width=True)
+
+        st.markdown("---")
+        st.markdown("##### ⚡ BigQuery SQL Query Console Simulator")
+        st.caption("Simulate direct SQL queries against the BigQuery production data warehouse.")
+
+        default_sql = """SELECT 
+    EXTRACT(YEAR FROM declaration_date) AS trade_year,
+    hs_code,
+    COUNT(*) AS total_declarations,
+    ROUND(AVG(risk_score), 2) AS avg_risk_score,
+    SUM(CASE WHEN risk_score >= 80 THEN 1 ELSE 0 END) AS flagged_anomalies
+FROM `sentinel_sec.declarations_2020_2026`
+WHERE declaration_date >= '2020-01-01'
+GROUP BY trade_year, hs_code
+ORDER BY trade_year DESC, flagged_anomalies DESC
+LIMIT 5;"""
+
+        sql_input = st.text_area("BigQuery SQL Terminal:", value=default_sql, height=160)
+
+        if st.button("▶️ Execute BigQuery SQL", type="primary", key="btn_run_sql"):
+            with st.spinner("Executing query against Google BigQuery (asia-southeast1)..."):
+                # Mock Query Execution Result
+                mock_res = pd.DataFrame({
+                    "trade_year": [2026, 2026, 2025, 2025, 2024],
+                    "hs_code": ["3915.10", "2903.42", "8549.21", "3915.10", "3915.10"],
+                    "total_declarations": [42100, 12800, 28400, 182000, 195400],
+                    "avg_risk_score": [78.4, 82.1, 69.5, 84.2, 86.9],
+                    "flagged_anomalies": [1420, 940, 610, 14800, 16900]
+                })
+                
+                st.success("Query executed successfully. Bytes processed: 184.2 MB. Execution time: 0.42 sec.")
+                st.dataframe(mock_res, use_container_width=True)
