@@ -15,7 +15,7 @@ def render_home_page():
             <h1 style="font-size: 2.5rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(255,255,255,0.8);">🛡️ SENTINEL Trade Intelligence</h1>
             <p style="font-size: 1.1rem; color: #334155; margin-top: 10px; font-weight: 500;">National Environmental Security & Trade Compliance Engine</p>
             <div style="margin-top: 20px;">
-                <span style="background: rgba(255, 255, 255, 0.8); color: #0284C7; padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid #7DD3FC; backdrop-filter: blur(4px);">✨ Smart Environmental Nexus for Trade Intelligence and Networked 
+                <span style="background: rgba(255, 255, 255, 0.8); color: #0284C7; padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid #7DD3FC; backdrop-filter: blur(4px);">Smart Environmental Nexus for Trade Intelligence and Networked 
 Enforcement Logic</span>
             </div>
         </div>
