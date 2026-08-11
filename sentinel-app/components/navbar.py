@@ -11,8 +11,8 @@ def render_sidebar():
     
     if os.path.exists(logo_path):
         st.sidebar.image(logo_path, width=110)
-    elif os.path.exists("logo.png"):
-        st.sidebar.image("logo.png", width=110)
+    elif os.path.exists("logo.svg"):
+        st.sidebar.image("logo.svg", width=110)
     else:
         st.sidebar.markdown("## 🛡️ VECTOR-1")
 
