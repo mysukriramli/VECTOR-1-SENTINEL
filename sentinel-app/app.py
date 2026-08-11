@@ -11,6 +11,7 @@ from components.navbar import render_sidebar
 # Page View Renderers
 from pages_views.home import render_home_page
 from pages_views.about import render_about_page
+from pages_views.publications import render_publications_page
 from pages_views.public_insights import render_public_insights_page
 from pages_views.anomaly_inspector import render_anomaly_inspector_page
 from pages_views.datastudio_catalog import render_datastudio_catalog_page
@@ -50,6 +51,8 @@ if "Home Overview" in active_page:
     render_home_page()
 elif "About SENTINEL" in active_page:
     render_about_page()
+elif "Publications" in active_page:
+    render_publications_page()
 elif "Public Threat Map" in active_page:
     render_public_insights_page()
 elif "Live Scanner" in active_page:
