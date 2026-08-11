@@ -7,12 +7,12 @@ def render_sidebar():
     
     # Path resolution for local logo file
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    logo_path = os.path.join(base_dir, "logo.svg")
+    logo_path = os.path.join(base_dir, "logo.png")
     
     if os.path.exists(logo_path):
         st.sidebar.image(logo_path, width=110)
-    elif os.path.exists("logo.svg"):
-        st.sidebar.image("logo.svg", width=110)
+    elif os.path.exists("logo.png"):
+        st.sidebar.image("logo.png", width=110)
     else:
         st.sidebar.markdown("## 🛡️ VECTOR-1")
 
