@@ -10,24 +10,24 @@ def apply_custom_styles():
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
 
-    /* 2. HIDE STREAMLIT FOOTER AND MAIN MENU ONLY (LEAVE HEADER/SIDEBAR CONTROLS ALONE) */
+    /* 2. HIDE FOOTER & MAIN MENU ONLY */
     footer {visibility: hidden !important;}
     #MainMenu {visibility: hidden !important;}
     .stDeployButton {display: none !important;}
 
-    /* 3. OPTIMIZE MAIN CONTAINER PADDING */
+    /* 3. INCREASE TOP PADDING TO FIX CROPPED HEADER TEXT */
     .block-container {
-        padding-top: 1.5rem !important;
+        padding-top: 4.5rem !important;
         padding-bottom: 2rem !important;
         max-width: 95% !important;
     }
 
-    /* 4. MAIN APPLICATION BACKGROUND */
+    /* 4. MAIN BACKGROUND */
     .stApp {
         background-color: #F8FAFC !important;
     }
 
-    /* 5. EXECUTIVE DARK SIDEBAR STYLING */
+    /* 5. EXECUTIVE DARK SIDEBAR */
     section[data-testid="stSidebar"] {
         background-color: #0F172A !important;
         border-right: 1px solid #1E293B !important;
@@ -36,23 +36,23 @@ def apply_custom_styles():
         color: #F8FAFC !important;
     }
 
-    /* 6. DROPDOWN & SELECTBOX TEXT FIX */
-    section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
-        background-color: #1E293B !important;
-        border: 1px solid #334155 !important;
-        border-radius: 8px !important;
-    }
-    section[data-testid="stSidebar"] div[data-baseweb="select"] span {
-        color: #F8FAFC !important;
-    }
-
-    div[data-testid="stMain"] div[data-baseweb="select"] > div {
+    /* 6. INPUT FIELDS & SELECTBOXES */
+    div[data-baseweb="input"] > div,
+    div[data-baseweb="select"] > div,
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stTextInput"] input,
+    input {
         background-color: #FFFFFF !important;
+        color: #0F172A !important;
         border: 1px solid #CBD5E1 !important;
         border-radius: 8px !important;
+        font-weight: 600 !important;
     }
-    div[data-testid="stMain"] div[data-baseweb="select"] span {
+
+    div[data-testid="stNumberInput"] button {
+        background-color: #F1F5F9 !important;
         color: #0F172A !important;
+        border: 1px solid #CBD5E1 !important;
     }
 
     div[data-baseweb="popover"] {
@@ -68,7 +68,7 @@ def apply_custom_styles():
         background-color: #EFF6FF !important;
     }
 
-    /* 7. METRIC CARD CONTAINERS */
+    /* 7. METRIC CARDS */
     div[data-testid="stMetric"] {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
@@ -104,6 +104,7 @@ def apply_custom_styles():
         font-weight: 800;
         color: #0F172A;
         margin-bottom: 0rem;
+        line-height: 1.2;
     }
     .sub-header {
         font-size: 1.05rem;
