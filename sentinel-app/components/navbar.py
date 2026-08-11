@@ -1,8 +1,21 @@
+import os
 import streamlit as st
 from components.auth import set_user_role
 
 def render_sidebar():
-    st.sidebar.image("https://img.icons8.com/color/96/shield-with-signature.png", width=64)
+    """Renders sidebar navigation and logo."""
+    
+    # Path resolution for local logo file
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    logo_path = os.path.join(base_dir, "logo.png")
+    
+    if os.path.exists(logo_path):
+        st.sidebar.image(logo_path, width=110)
+    elif os.path.exists("logo.png"):
+        st.sidebar.image("logo.png", width=110)
+    else:
+        st.sidebar.markdown("## 🛡️ SENTINEL")
+
     st.sidebar.title("SENTINEL Engine")
     st.sidebar.caption("Smart Environmental Nexus for Trade Intelligence")
 
