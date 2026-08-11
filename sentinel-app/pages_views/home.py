@@ -3,145 +3,117 @@ import pandas as pd
 import plotly.express as px
 
 def render_home_page():
+    
     # --------------------------------------------------------------------------
-    # 1. IMMERSIVE INTERACTIVE HERO CANVAS (PARTICLE NETWORK)
+    # 1. INTERACTIVE HTML5 NEURAL CANVAS (REACTS TO CURSOR MOVEMENT)
     # --------------------------------------------------------------------------
-    hero_canvas_html = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <style>
-            body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0b1121; font-family: 'Inter', sans-serif; }
-            #canvas1 { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-            .hero-content {
-                position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                text-align: center; z-index: 2; pointer-events: none; width: 100%;
-            }
-            .title { font-size: 3.5rem; font-weight: 800; color: #ffffff; margin: 0; letter-spacing: -1px; text-shadow: 0px 4px 20px rgba(59, 130, 246, 0.5); }
-            .subtitle { font-size: 1.1rem; color: #94A3B8; font-family: monospace; letter-spacing: 3px; margin-top: 10px; }
-            .badge { display: inline-block; background: rgba(37, 99, 235, 0.2); border: 1px solid rgba(37, 99, 235, 0.5); padding: 6px 16px; border-radius: 20px; color: #60A5FA; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px; }
-        </style>
-    </head>
-    <body>
-        <canvas id="canvas1"></canvas>
-        <div class="hero-content">
-            <div class="badge">● AI ENGINE ONLINE</div>
-            <h1 class="title">SENTINEL</h1>
-            <div class="subtitle">NATIONAL ENVIRONMENTAL TRADE INTELLIGENCE HUB</div>
+    # Clean, light-themed particle network
+    html_canvas = """
+    <div style="position: relative; width: 100%; height: 320px; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, #F8FAFC 0%, #E0F2FE 100%); border: 1px solid #BAE6FD; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1); margin-bottom: 1.5rem;">
+        <canvas id="neuralCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 90%;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(255,255,255,0.8);">🛡️ SENTINEL Intelligence Nexus</h1>
+            <p style="font-size: 1.1rem; color: #334155; margin-top: 10px; font-weight: 500;">National Environmental Security & Trade Compliance Engine</p>
+            <div style="margin-top: 20px;">
+                <span style="background: rgba(255, 255, 255, 0.8); color: #0284C7; padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid #7DD3FC; backdrop-filter: blur(4px);">✨ AI-Powered Neural Threat Detection Active</span>
+            </div>
         </div>
-        <script>
-            const canvas = document.getElementById("canvas1");
-            const ctx = canvas.getContext("2d");
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            let particlesArray;
-            let mouse = { x: null, y: null, radius: 120 };
+    </div>
+    <script>
+        const canvas = document.getElementById('neuralCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        const mouse = { x: -9999, y: -9999 };
 
-            window.addEventListener('mousemove', function(event) {
-                mouse.x = event.x; mouse.y = event.y;
-            });
-            window.addEventListener('mouseout', function() {
-                mouse.x = undefined; mouse.y = undefined;
-            });
+        function init() {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+        }
+        window.addEventListener('resize', init);
+        init();
 
-            class Particle {
-                constructor(x, y, directionX, directionY, size, color) {
-                    this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        canvas.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.9;
+                this.vy = (Math.random() - 0.5) * 0.9;
+                this.radius = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(14, 165, 233, 0.6)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 90; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                const dxMouse = particles[i].x - mouse.x;
+                const dyMouse = particles[i].y - mouse.y;
+                const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                if (distMouse < 140) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.strokeStyle = `rgba(14, 165, 233, ${1 - distMouse/140})`;
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
                 }
-                draw() {
-                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                    ctx.fillStyle = '#3b82f6'; ctx.fill();
-                }
-                update() {
-                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    if (distance < mouse.radius + this.size){
-                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
-                        if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
-                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
-                        if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 110) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(148, 163, 184, ${0.3 - dist/300})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
                     }
-                    this.x += this.directionX; this.y += this.directionY;
-                    this.draw();
                 }
             }
-            function init() {
-                particlesArray = [];
-                let numberOfParticles = (canvas.height * canvas.width) / 8000;
-                for (let i = 0; i < numberOfParticles; i++) {
-                    let size = (Math.random() * 2) + 1;
-                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                    let directionX = (Math.random() * 1.5) - 0.75;
-                    let directionY = (Math.random() * 1.5) - 0.75;
-                    particlesArray.push(new Particle(x, y, directionX, directionY, size, '#3b82f6'));
-                }
-            }
-            function connect() {
-                let opacityValue = 1;
-                for (let a = 0; a < particlesArray.length; a++) {
-                    for (let b = a; b < particlesArray.length; b++) {
-                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                        + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                        if (distance < (canvas.width/7) * (canvas.height/7)) {
-                            opacityValue = 1 - (distance/15000);
-                            ctx.strokeStyle = 'rgba(59, 130, 246,' + opacityValue + ')';
-                            ctx.lineWidth = 1.2; ctx.beginPath();
-                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
-                        }
-                    }
-                }
-            }
-            function animate() {
-                requestAnimationFrame(animate);
-                ctx.clearRect(0, 0, innerWidth, innerHeight);
-                for (let i = 0; i < particlesArray.length; i++) particlesArray[i].update();
-                connect();
-            }
-            window.addEventListener('resize', function() { canvas.width = innerWidth; canvas.height = innerHeight; init(); });
-            init(); animate();
-        </script>
-    </body>
-    </html>
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
     """
-    # Render the interactive canvas (Hide Streamlit's default padding to make it flush)
-    st.components.v1.html(hero_canvas_html, height=380)
+    st.components.v1.html(html_canvas, height=330)
 
     # --------------------------------------------------------------------------
-    # 2. CLEAR TIER DEFINITIONS (Overrides the visual gap seamlessly)
+    # 2. DYNAMIC TIER ACCESS BADGE
     # --------------------------------------------------------------------------
     role = st.session_state.get("user_role", "Public (Free)")
     
     if role == "Public (Free)":
-        st.markdown("""
-        <div class="tier-card tier-public">
-            <div class="tier-title">🟢 Public Transparency Access</div>
-            <div class="tier-desc">Welcome to SENTINEL. You are viewing public compliance data, regional threat mapping, and inter-agency enforcement statistics. This tier promotes national accountability and environmental treaty transparency.</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("<div class='tier-badge-public'>🟢 <b>Tier 1: Public Transparency Access</b> — Inspecting public treaty statistics and regional threat radars.</div>", unsafe_allow_html=True)
     elif role == "Gov Agency":
-        st.markdown("""
-        <div class="tier-card tier-gov">
-            <div class="tier-title">🔵 Inter-Agency Operational Access</div>
-            <div class="tier-desc">Welcome Officer. SENTINEL empowers JKDM, JAS, MITI, and PERHILITAN with live AI anomaly scanners, OCR manifest extraction, and the Human-in-the-Loop multi-agency incident escalation queue.</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("<div class='tier-badge-gov'>🔵 <b>Tier 2: Inter-Agency Operational Access (JKDM/JAS)</b> — Unlocked Live ML Scanner and Escalation Queue.</div>", unsafe_allow_html=True)
     else:
-        st.markdown("""
-        <div class="tier-card tier-admin">
-            <div class="tier-title">🔴 Root Admin Governance Access</div>
-            <div class="tier-desc">Governance Hub Unlocked. You have full systemic clearance to audit the BigQuery 2020-2026 data warehouse, verify ML SHA-256 cryptographic signatures, and recalibrate enforcement contamination thresholds.</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("<div class='tier-badge-admin'>🔴 <b>Tier 3: Root Admin Access</b> — Unlocked BigQuery Hub, SHA-256 Hashes, and Sensitivity Controls.</div>", unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # --------------------------------------------------------------------------
-    # 3. EXECUTIVE PLATFORM METRICS
-    # --------------------------------------------------------------------------
     m1, m2, m3, m4 = st.columns(4)
     m1.metric("Audited Declarations", "142,890", "↑ 12.4% YoY")
     m2.metric("Overall Anomaly Rate", "4.12%", "↓ 0.8% YoY")
@@ -151,65 +123,80 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 4. SIDE-BY-SIDE: MEAs & DATA STUDIO EMBED
+    # 3. INTERACTIVE MEA IMPACT STUDIO
     # --------------------------------------------------------------------------
-    st.markdown("### 📜 Multilateral Environmental Agreements (MEAs)")
-    st.caption("SENTINEL enforces intelligence protocols across four international environmental treaties.")
+    st.markdown("### 📜 Interactive MEA Enforcement Impact Studio")
+    st.caption("Select a treaty framework below to instantly view real-time enforcement statistics and associated trade volume drops.")
 
-    col_meas, col_chart = st.columns([1, 1.2])
+    selected_mea = st.radio(
+        "Choose MEA Framework to Inspect:",
+        ["♻️ Basel Convention", "❄️ Montreal Protocol", "🌿 CITES Framework", "🧪 Stockholm/Rotterdam"],
+        horizontal=True
+    )
 
-    with col_meas:
-        st.markdown("""
-        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
-            <div style="font-size:1.0rem; font-weight:800; color:#0F172A;">♻️ Basel Convention</div>
-            <div style="font-size:0.8rem; color:#475569;"><b>Focus:</b> Plastic Scrap (HS 3915) & E-Waste (HS 8548)</div>
-        </div>
-        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
-            <div style="font-size:1.0rem; font-weight:800; color:#0F172A;">❄️ Montreal Protocol</div>
-            <div style="font-size:0.8rem; color:#475569;"><b>Focus:</b> Ozone Depleting Substances (HS 2903)</div>
-        </div>
-        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
-            <div style="font-size:1.0rem; font-weight:800; color:#0F172A;">🌿 CITES Framework</div>
-            <div style="font-size:0.8rem; color:#475569;"><b>Focus:</b> Wildlife & Protected Timber (HS 4403)</div>
-        </div>
-        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:14px; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
-            <div style="font-size:1.0rem; font-weight:800; color:#0F172A;">🧪 Stockholm & Rotterdam</div>
-            <div style="font-size:0.8rem; color:#475569;"><b>Focus:</b> POPs & Hazardous Toxic Chemicals</div>
-        </div>
-        """, unsafe_allow_html=True)
+    col_info, col_chart = st.columns([1, 1.2])
+
+    with col_info:
+        if "Basel" in selected_mea:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #2563EB; border-radius:10px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#0F172A;">♻️ Basel Convention</h4>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 3915 (Plastic Scrap), HS 8548/8549 (E-Waste)</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> JAS & JKDM Customs</p>
+                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>plastic_forensic.joblib</code></p>
+            </div>
+            """, unsafe_allow_html=True)
+            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [14200, 15800, 13900, 4100, 1200, 850, 410]})
+            chart_title = "HS 3915.10 (Plastic Waste) Import Volume Dip"
+
+        elif "Montreal" in selected_mea:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #06B6D4; border-radius:10px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#0F172A;">❄️ Montreal Protocol</h4>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 2903 (CFCs, HCFCs, HFC Refrigerants)</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> JAS & MITI</p>
+                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>ods_forensic.joblib</code></p>
+            </div>
+            """, unsafe_allow_html=True)
+            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [8500, 9200, 8800, 2900, 950, 420, 180]})
+            chart_title = "HS 2903.42 (HCFC-22 Gases) Import Volume Dip"
+
+        elif "CITES" in selected_mea:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #10B981; border-radius:10px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#0F172A;">🌿 CITES Framework</h4>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 0106 (Fauna), HS 4403 (Timber)</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> PERHILITAN & MAQIS</p>
+                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>species_discrepancy.joblib</code></p>
+            </div>
+            """, unsafe_allow_html=True)
+            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [5400, 6100, 5800, 1800, 620, 310, 120]})
+            chart_title = "HS 4403.49 (Protected Timber) Unlicensed Dip"
+
+        else:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #8B5CF6; border-radius:10px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#0F172A;">🧪 Stockholm & Rotterdam</h4>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> POPs & Toxic Pesticides</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> Dept of Agriculture & JAS</p>
+                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>chemical_index.joblib</code></p>
+            </div>
+            """, unsafe_allow_html=True)
+            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [3200, 3800, 3400, 920, 280, 110, 45]})
+            chart_title = "Hazardous POP Chemicals Import Dip"
 
     with col_chart:
-        # Trade Dip Analytics for Banned HS Code (Basel Convention)
-        st.markdown("<div style='font-size:1rem; font-weight:700; color:#0F172A; margin-bottom:10px;'>📊 Public Analytics: Enforcement Impact on HS 3915.10</div>", unsafe_allow_html=True)
-        
-        dip_df = pd.DataFrame({
-            "Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"],
-            "Import Volume (Metric Tons)": [14200, 15800, 13900, 4100, 1200, 850, 410]
-        })
-
-        fig_dip = px.area(
-            dip_df, 
-            x="Month", 
-            y="Import Volume (Metric Tons)",
-            markers=True,
-            color_discrete_sequence=["#10B981"]
-        )
-        fig_dip.update_layout(
-            height=280, 
-            margin=dict(l=0, r=0, t=10, b=0),
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            yaxis=dict(gridcolor='#E2E8F0')
-        )
+        fig_dip = px.line(dip_data, x="Month", y="Tons", markers=True, title=chart_title, color_discrete_sequence=["#0EA5E9"])
+        fig_dip.update_layout(height=260, margin=dict(l=10, r=10, t=35, b=10), paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig_dip, use_container_width=True)
 
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 5. ANIMATED SOFT-GLOW LEAFLET THREAT MAP
+    # 4. IMMERSIVE SOFT-GLOW THREAT RADAR MAP
     # --------------------------------------------------------------------------
     st.markdown("### 🌍 Real-Time Regional Threat Radar")
-    st.caption("Hover over pulsing nodes to inspect active anomalies at Malaysian ports.")
+    st.caption("Live geographical anomaly heat map across Malaysian entry points. **Red/Cyan pulsing markers** indicate high-risk active interdictions.")
 
     leaflet_map_html = """
     <!DOCTYPE html>
@@ -218,41 +205,54 @@ def render_home_page():
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <style>
-            #map { height: 420px; width: 100%; border-radius: 12px; border: 1px solid #E2E8F0; }
-            .pulse-icon {
-                background: rgba(220, 38, 38, 1);
+            #map { height: 420px; width: 100%; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+            .pulse-icon-red {
+                background: rgba(239, 68, 68, 0.9);
                 border-radius: 50%;
-                box-shadow: 0 0 0 rgba(220, 38, 38, 0.7);
-                animation: pulse-ring 2s infinite;
+                box-shadow: 0 0 0 rgba(239, 68, 68, 0.6);
+                animation: pulse-red 2s infinite;
             }
-            @keyframes pulse-ring {
-                0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-                70% { box-shadow: 0 0 0 18px rgba(220, 38, 38, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+            .pulse-icon-cyan {
+                background: rgba(14, 165, 233, 0.9);
+                border-radius: 50%;
+                box-shadow: 0 0 0 rgba(14, 165, 233, 0.6);
+                animation: pulse-cyan 2s infinite;
             }
-            .leaflet-popup-content { font-family: 'Inter', sans-serif; font-size: 14px; }
+            @keyframes pulse-red {
+                0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+                70% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            }
+            @keyframes pulse-cyan {
+                0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.6); }
+                70% { box-shadow: 0 0 0 16px rgba(14, 165, 233, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+            }
         </style>
     </head>
     <body>
         <div id="map"></div>
         <script>
-            var map = L.map('map').setView([4.2, 108.0], 5);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            var map = L.map('map').setView([4.2, 108.0], 5.5);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap'
             }).addTo(map);
 
             var ports = [
-                {name: "Port Klang", lat: 3.00, lon: 101.40, desc: "High Risk Plastic Scrap (HS 3915.10)"},
-                {name: "Johor Port", lat: 1.45, lon: 103.75, desc: "Unlicensed ODS Gas (HS 2903.42)"},
-                {name: "Penang Port", lat: 5.41, lon: 100.32, desc: "Illegal E-Waste Containers (HS 8549)"},
-                {name: "Bintulu Port", lat: 4.58, lon: 114.00, desc: "Timber CITES Mismatch (HS 4403)"},
-                {name: "KLIA Cargo", lat: 2.80, lon: 101.70, desc: "Chemical POPs Mismatch"}
+                {name: "Port Klang", lat: 3.00, lon: 101.40, desc: "High Risk Plastic Scrap (HS 3915)", type: "red"},
+                {name: "Johor Port", lat: 1.45, lon: 103.75, desc: "Unlicensed ODS Gas (HS 2903)", type: "cyan"},
+                {name: "Penang Port", lat: 5.41, lon: 100.32, desc: "Illegal E-Waste (HS 8549)", type: "red"},
+                {name: "Bintulu Port", lat: 4.58, lon: 114.00, desc: "Timber CITES Mismatch (HS 4403)", type: "cyan"},
+                {name: "KLIA Cargo", lat: 2.80, lon: 101.70, desc: "Chemical POPs Mismatch", type: "red"}
             ];
 
             ports.forEach(function(p) {
-                var pulseMarker = L.divIcon({ className: 'pulse-icon', iconSize: [12, 12] });
+                var pulseMarker = L.divIcon({
+                    className: p.type === 'red' ? 'pulse-icon-red' : 'pulse-icon-cyan',
+                    iconSize: [12, 12]
+                });
                 L.marker([p.lat, p.lon], {icon: pulseMarker}).addTo(map)
-                    .bindPopup("<b>" + p.name + "</b><br><span style='color:#DC2626; font-weight:bold;'>" + p.desc + "</span>");
+                    .bindPopup("<div style='font-family:sans-serif;'><b>" + p.name + "</b><br>" + p.desc + "</div>");
             });
         </script>
     </body>
@@ -263,16 +263,18 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 6. QUICK LAUNCH DESK
+    # 5. QUICK LAUNCH DESK
     # --------------------------------------------------------------------------
-    st.markdown("### 🚀 Operations Quick Launch")
-    
-    col_q1, col_q2, col_q3, col_q4 = st.columns(4)
-    with col_q1:
-        if st.button("🔍 Live Scanner"): st.info("Use the sidebar menu to navigate.")
-    with col_q2:
-        if st.button("📈 Data Studio"): st.info("Use the sidebar menu to navigate.")
-    with col_q3:
-        if st.button("🤖 AI Copilot"): st.info("Use the sidebar menu to navigate.")
-    with col_q4:
-        if st.button("📞 HITL Queue"): st.info("Use the sidebar menu to navigate.")
+    st.markdown("### 🚀 Platform Quick Launch Desk")
+    st.caption("Instantly navigate to operational modules:")
+
+    btn1, btn2, btn3, btn4 = st.columns(4)
+
+    with btn1:
+        st.button("🔍 Live Scanner")
+    with btn2:
+        st.button("📈 Data Studio Hub")
+    with btn3:
+        st.button("🤖 AI Legal Copilot")
+    with btn4:
+        st.button("📞 HITL Review Queue")
