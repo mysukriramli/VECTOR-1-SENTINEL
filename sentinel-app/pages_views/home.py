@@ -1,93 +1,85 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
 def render_home_page():
-    # Top Branding Header
-    st.markdown("""
-    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-        <div>
-            <span class="psainc-badge"><span class="pulse-dot"></span> PSAINC 2026 | JDN & NAIO CHALLENGE</span>
-            <span class="psainc-badge" style="background-color: #FEF3C7; color: #92400E; border-color: #FDE68A;">TEAM: VECTOR 1</span>
-        </div>
-        <div>
-            <span class="psainc-badge" style="background-color: #F1F5F9; color: #475569; border-color: #E2E8F0;">Garis Panduan AI Sektor Awam Compliant</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    tab_overview, tab_judges = st.tabs([
-        "🏠 Executive Dashboard & Overview", 
-        "🏛️ PSAINC 2026 Pitching & Evaluation Workbench"
-    ])
-
+    st.subheader("🏠 National Environmental Trade Intelligence Hub")
+    
     # --------------------------------------------------------------------------
-    # TAB 1: EXECUTIVE DASHBOARD OVERVIEW
+    # PSAINC2026 COMPETITION PITCH ROOM TAB (FOR JUDGES)
     # --------------------------------------------------------------------------
-    with tab_overview:
-        st.markdown("### 🛡️ SENTINEL Trade Intelligence Portal")
-        st.caption("Smart Environmental Nexus for Trade Intelligence & Networked Enforcement Logic")
-
-        # Top Macro Metrics
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Audited Declarations", "142,890", "↑ +12.4% YoY")
-        c2.metric("Overall Anomaly Rate", "4.12%", "↓ -0.8% YoY")
-        c3.metric("Container Interceptions", "382 Hold Orders", "JKDM / JAS")
-        c4.metric("Active ML Models", "3 Deployed", "100% XAI Audited")
-
-        st.markdown("---")
-
-        st.markdown("#### 🚀 Multi-Agency Enforcement Pillars")
-        p1, p2, p3 = st.columns(3)
+    with st.expander("🏆 **PSAINC2026 Judge's Deliverables Desk (Team VECTOR 1)**", expanded=True):
+        st.caption("Official competition submission assets for Jabatan Digital Negara (JDN) & NAIO evaluation panel.")
         
-        with p1:
-            st.info("##### 🔍 1. Live Anomaly Detection")
-            st.write("Scans customs manifests (Single entry, CSV Batch, or OCR Document) against scikit-learn Isolation Forest ML pipelines calibrated for illegal trade.")
+        d_tab1, d_tab2, d_tab3, d_tab4 = st.tabs([
+            "📑 Executive Summary", 
+            "🖼️ A1 Poster", 
+            "🎬 2-Min Demo Video", 
+            "📊 Pitch Deck (5 Slides)"
+        ])
+        
+        with d_tab1:
+            st.markdown("##### 1. Project Executive Summary (Template PDF)")
+            st.markdown("""
+            * **Project Name:** SENTINEL (Smart Environmental Nexus for Trade Intelligence)
+            * **Team Name:** VECTOR 1[cite: 2]
+            * **Lead Owner:** Cross-Agency Collaboration (JAS, JKDM, MITI, PERHILITAN)[cite: 2]
+            * **AI Approach:** Isolation Forest Anomaly Detection + OCR Manifest Parsing + Google Looker Studio Analytics[cite: 2].
+            * **Public Impact:** RM 42.8M prevented revenue fraud, 382 toxic illegal waste containers intercepted[cite: 2].
+            """)
+            st.download_button("📥 Download Executive Summary (PDF)", b"MOCK_PDF_DATA", "SENTINEL_Executive_Summary_VECTOR1.pdf")
 
-        with p2:
-            st.success("##### 🏛️ 2. Multi-Agency HITL Routing")
-            st.write("Connects Customs (JKDM), Environment (JAS), Trade (MITI), and Wildlife (PERHILITAN) into a single Human-in-the-Loop escalation workflow.")
+        with d_tab2:
+            st.markdown("##### 2. Official Competition Poster (A1 Portrait)[cite: 2]")
+            st.info("A1 Poster resolution: 594mm x 841mm, 150+ DPI[cite: 2]. Contains problem statement, AI architecture, UI screens, and team contact[cite: 2].")
 
-        with p3:
-            st.warning("##### ⚖️ 3. Responsible AI & Governance")
-            st.write("Fulfills JDN/NAIO guidelines with SHA-256 model checksums, XAI feature attribution charts, and SPA Bil. 2/2021 v2.0 cloud security standards.")
+        with d_tab3:
+            st.markdown("##### 3. Prototype Video Demonstration (2 Mins Max MP4)[cite: 2]")
+            st.caption("Highlights problem statement, live .joblib ML inference, and multi-agency escalation workflow[cite: 2].")
+            # Sample Video Placeholder
+            st.video("https://www.w3schools.com/html/mov_bbb.mp4")
 
-    # --------------------------------------------------------------------------
-    # TAB 2: PSAINC 2026 JUDGES PITCHING BENCH
-    # --------------------------------------------------------------------------
-    with tab_judges:
-        st.markdown("### 📋 Public Sector AI Nexus Challenge 2026 — Team VECTOR 1")
-        st.caption("Direct alignment map against Jabatan Digital Negara (JDN) & NAIO evaluation criteria.")
+        with d_tab4:
+            st.markdown("##### 4. Presentation Slide Deck (5 Core Slides)[cite: 2]")
+            st.markdown("""
+            1. **Slide 1:** Problem Statement & Multi-MEA Statutory Context[cite: 2]
+            2. **Slide 2:** AI Architecture & Cloud Sandbox Integration (Google / TM AIaaS)[cite: 2]
+            3. **Slide 3:** Live Prototype Workflow & Feature Set[cite: 2]
+            4. **Slide 4:** Public Impact, Economic Value & Citizen ROI[cite: 2]
+            5. **Slide 5:** Scalability Roadmap & Expansion Plan[cite: 2]
+            """)
 
-        col_j1, col_j2 = st.columns([3, 2])
+    st.markdown("---")
 
-        with col_j1:
-            st.markdown("#### 🎯 Evaluation Criteria Mapping")
-            
-            with st.expander("1. Impact & Relevance (25%)", expanded=True):
-                st.write("**Cross-Agency Solution (*Merentas Agensi*):** Integrates **JAS, JKDM, MITI, and PERHILITAN** to prevent hazardous waste dumping, ODS refrigerant smuggling, and illegal e-waste entry.")
-                st.write("**Economic ROI:** Estimated **RM 42.8M** in prevented illegal landfill remediation costs and tariff evasion.")
+    # Metrics Overview
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Audited Declarations", "142,890", "↑ 12.4% YoY")
+    c2.metric("Overall Anomaly Rate", "4.12%", "↓ 0.8% YoY")
+    c3.metric("Container Interceptions", "382 Holds", "JKDM / JAS")
+    c4.metric("Active ML Models", "3 Deployed", "2 In Sandbox")
 
-            with st.expander("2. Feasibility & Implementation (20%)", expanded=True):
-                st.write("**Operational Prototype:** Fully hosted Streamlit platform with live single-item scanning, bulk CSV inference, document OCR parsing, and Looker Studio BI integration.")
+    st.markdown("---")
 
-            with st.expander("3. Innovation & AI Application (25%)", expanded=True):
-                st.write("**AI Approach:** Unsupervised scikit-learn Isolation Forests trained on historical customs parameters (unit price deviation, volume-to-density ratio, origin risk).")
-
-            with st.expander("4. User-Centricity & Design (10%)", expanded=True):
-                st.write("**UI/UX Polish:** Custom executive styling, light navbar theme matching agency logos, micro-interaction hover states, and dynamic status badges.")
-
-            with st.expander("5. Responsible AI & Governance (10%)", expanded=True):
-                st.write("**4 Pillars Fulfilling JDN AI Guidelines:** AI Ethics, Accuracy, XAI Explainability, and Data Security (SPA Bil. 2/2021 v2.0).")
-
-        with col_j2:
-            st.markdown("#### 📦 Deliverables Checklist")
-            st.success("✅ **Executive Summary PDF:** Generated & Ready")
-            st.success("✅ **Poster A1 (PDF):** High-Res Infographic Ready")
-            st.success("✅ **Pitch Deck (5 Slides):** Aligned with Slide Requirements")
-            st.success("✅ **Video Demo (2 Mins MP4):** HD Screen Recording Ready")
-            st.success("✅ **Live Prototype Demo:** Operational")
-
-            st.markdown("---")
-            st.markdown("#### 👥 Team Details — VECTOR 1")
-            st.write("**Lead Agency:** Jabatan Alam Sekitar (JAS) / Multi-Agency Unit")
-            st.write("**Team Members:** 3 Public Servants")
-            st.write("**Target CSP Platform:** Google Cloud / Looker Studio (CFA Catalog)")
+    # Interactive Threat Heatmap
+    st.markdown("##### 🌍 Real-Time Regional Environmental Trade Threat Feed")
+    
+    map_data = pd.DataFrame({
+        'lat': [3.0, 1.5, 5.4, 4.5, 2.5],
+        'lon': [101.4, 103.8, 100.3, 114.0, 101.8],
+        'Risk_Level': ['High Risk Plastic', 'ODS Gas Misdeclaration', 'E-Waste Shipment', 'Timber CITES Deficit', 'Toxic Sludge'],
+        'Score': [92, 88, 79, 85, 94]
+    })
+    
+    fig = px.scatter_mapbox(
+        map_data, 
+        lat="lat", 
+        lon="lon", 
+        color="Score", 
+        size="Score",
+        hover_name="Risk_Level",
+        color_continuous_scale="Reds",
+        zoom=5, 
+        height=380
+    )
+    fig.update_layout(mapbox_style="open-street-map", margin=dict(l=0, r=0, t=0, b=0))
+    st.plotly_chart(fig, use_container_width=True)
