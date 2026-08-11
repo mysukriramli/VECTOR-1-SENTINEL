@@ -5,18 +5,16 @@ import plotly.express as px
 def render_home_page():
     
     # --------------------------------------------------------------------------
-    # 1. INTERACTIVE HTML5 NEURAL CANVAS (REACTS TO CURSOR MOVEMENT)
+    # 1. INTERACTIVE HTML5 NEURAL CANVAS (DEEP BRAND BLUE)
     # --------------------------------------------------------------------------
-    # Clean, light-themed particle network
     html_canvas = """
-    <div style="position: relative; width: 100%; height: 320px; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, #F8FAFC 0%, #E0F2FE 100%); border: 1px solid #BAE6FD; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1); margin-bottom: 1.5rem;">
+    <div style="position: relative; width: 100%; height: 320px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%); border: 1px solid #CBD5E1; margin-bottom: 1.5rem;">
         <canvas id="neuralCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 90%;">
-            <h1 style="font-size: 2.5rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(255,255,255,0.8);">🛡️ SENTINEL Trade Intelligence</h1>
-            <p style="font-size: 1.1rem; color: #334155; margin-top: 10px; font-weight: 500;">National Environmental Security & Trade Compliance Engine</p>
+            <h1 style="font-size: 2.2rem; font-weight: 800; color: #1A365D; margin: 0; letter-spacing: -0.5px;">SENTINEL Intelligence Nexus</h1>
+            <p style="font-size: 1.05rem; color: #334155; margin-top: 10px; font-weight: 500;">National Environmental Security & Trade Compliance Engine</p>
             <div style="margin-top: 20px;">
-                <span style="background: rgba(255, 255, 255, 0.8); color: #0284C7; padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid #7DD3FC; backdrop-filter: blur(4px);">Smart Environmental Nexus for Trade Intelligence and Networked 
-Enforcement Logic</span>
+                <span style="background: rgba(255, 255, 255, 0.9); color: #1E3A8A; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; border: 1px solid #BFDBFE; text-transform: uppercase; letter-spacing: 0.5px;">AI-Powered Threat Detection Active</span>
             </div>
         </div>
     </div>
@@ -45,9 +43,9 @@ Enforcement Logic</span>
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.9;
-                this.vy = (Math.random() - 0.5) * 0.9;
-                this.radius = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 0.7;
+                this.vy = (Math.random() - 0.5) * 0.7;
+                this.radius = Math.random() * 1.5 + 1;
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
@@ -57,12 +55,12 @@ Enforcement Logic</span>
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(14, 165, 233, 0.6)';
+                ctx.fillStyle = 'rgba(26, 54, 93, 0.5)';
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < 90; i++) particles.push(new Particle());
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
@@ -73,12 +71,12 @@ Enforcement Logic</span>
                 const dxMouse = particles[i].x - mouse.x;
                 const dyMouse = particles[i].y - mouse.y;
                 const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-                if (distMouse < 140) {
+                if (distMouse < 150) {
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(mouse.x, mouse.y);
-                    ctx.strokeStyle = `rgba(14, 165, 233, ${1 - distMouse/140})`;
-                    ctx.lineWidth = 1.2;
+                    ctx.strokeStyle = `rgba(37, 99, 235, ${0.8 - distMouse/150})`;
+                    ctx.lineWidth = 1.0;
                     ctx.stroke();
                 }
 
@@ -86,12 +84,12 @@ Enforcement Logic</span>
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 110) {
+                    if (dist < 100) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(148, 163, 184, ${0.3 - dist/300})`;
-                        ctx.lineWidth = 0.6;
+                        ctx.strokeStyle = `rgba(100, 116, 139, ${0.2 - dist/500})`;
+                        ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
                 }
@@ -109,29 +107,29 @@ Enforcement Logic</span>
     role = st.session_state.get("user_role", "Public (Free)")
     
     if role == "Public (Free)":
-        st.markdown("<div class='tier-badge-public'>🟢 <b>Tier 1: Public Transparency Access</b> — Inspecting public treaty statistics and regional threat radars.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='tier-badge-public'>Tier 1: Public Transparency Access — Inspecting public treaty statistics and regional threat radars.</div>", unsafe_allow_html=True)
     elif role == "Gov Agency":
-        st.markdown("<div class='tier-badge-gov'>🔵 <b>Tier 2: Inter-Agency Operational Access (JKDM/JAS)</b> — Unlocked Live ML Scanner and Escalation Queue.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='tier-badge-gov'>Tier 2: Inter-Agency Operational Access — Unlocked Live ML Scanner and Escalation Queue.</div>", unsafe_allow_html=True)
     else:
-        st.markdown("<div class='tier-badge-admin'>🔴 <b>Tier 3: Root Admin Access</b> — Unlocked BigQuery Hub, SHA-256 Hashes, and Sensitivity Controls.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='tier-badge-admin'>Tier 3: Root Admin Access — Unlocked BigQuery Hub, SHA-256 Hashes, and Sensitivity Controls.</div>", unsafe_allow_html=True)
 
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Audited Declarations", "142,890", "↑ 12.4% YoY")
-    m2.metric("Overall Anomaly Rate", "4.12%", "↓ 0.8% YoY")
+    m1.metric("Audited Declarations", "142,890", "12.4% YoY")
+    m2.metric("Overall Anomaly Rate", "4.12%", "-0.8% YoY")
     m3.metric("Container Interceptions", "382 Holds", "JKDM / JAS Actions")
     m4.metric("Active ML Models", "3 Live Pipelines", "2 In Sandbox")
 
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 3. INTERACTIVE MEA IMPACT STUDIO
+    # 3. INTERACTIVE MEA IMPACT STUDIO (SERIOUS BRANDING)
     # --------------------------------------------------------------------------
-    st.markdown("### 📜 Interactive MEA Enforcement Impact Studio")
+    st.markdown("### Interactive MEA Enforcement Impact Studio")
     st.caption("Select a treaty framework below to instantly view real-time enforcement statistics and associated trade volume drops.")
 
     selected_mea = st.radio(
         "Choose MEA Framework to Inspect:",
-        ["♻️ Basel Convention", "❄️ Montreal Protocol", "🌿 CITES Framework", "🧪 Stockholm/Rotterdam"],
+        ["Basel Convention", "Montreal Protocol", "CITES Framework", "Stockholm/Rotterdam"],
         horizontal=True
     )
 
@@ -140,11 +138,11 @@ Enforcement Logic</span>
     with col_info:
         if "Basel" in selected_mea:
             st.markdown("""
-            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #2563EB; border-radius:10px; padding:18px;">
-                <h4 style="margin:0 0 6px 0; color:#0F172A;">♻️ Basel Convention</h4>
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #1A365D; border-radius:6px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#1A365D;">Basel Convention</h4>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 3915 (Plastic Scrap), HS 8548/8549 (E-Waste)</p>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> JAS & JKDM Customs</p>
-                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>plastic_forensic.joblib</code></p>
+                <p style="font-size:0.82rem; color:#475569;"><b>Active AI Pipeline:</b> <code>plastic_forensic.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
             dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [14200, 15800, 13900, 4100, 1200, 850, 410]})
@@ -152,11 +150,11 @@ Enforcement Logic</span>
 
         elif "Montreal" in selected_mea:
             st.markdown("""
-            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #06B6D4; border-radius:10px; padding:18px;">
-                <h4 style="margin:0 0 6px 0; color:#0F172A;">❄️ Montreal Protocol</h4>
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #2563EB; border-radius:6px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#1A365D;">Montreal Protocol</h4>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 2903 (CFCs, HCFCs, HFC Refrigerants)</p>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> JAS & MITI</p>
-                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>ods_forensic.joblib</code></p>
+                <p style="font-size:0.82rem; color:#475569;"><b>Active AI Pipeline:</b> <code>ods_forensic.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
             dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [8500, 9200, 8800, 2900, 950, 420, 180]})
@@ -164,11 +162,11 @@ Enforcement Logic</span>
 
         elif "CITES" in selected_mea:
             st.markdown("""
-            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #10B981; border-radius:10px; padding:18px;">
-                <h4 style="margin:0 0 6px 0; color:#0F172A;">🌿 CITES Framework</h4>
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #334155; border-radius:6px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#1A365D;">CITES Framework</h4>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 0106 (Fauna), HS 4403 (Timber)</p>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> PERHILITAN & MAQIS</p>
-                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>species_discrepancy.joblib</code></p>
+                <p style="font-size:0.82rem; color:#475569;"><b>Active AI Pipeline:</b> <code>species_discrepancy.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
             dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [5400, 6100, 5800, 1800, 620, 310, 120]})
@@ -176,18 +174,18 @@ Enforcement Logic</span>
 
         else:
             st.markdown("""
-            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:5px solid #8B5CF6; border-radius:10px; padding:18px;">
-                <h4 style="margin:0 0 6px 0; color:#0F172A;">🧪 Stockholm & Rotterdam</h4>
+            <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #64748B; border-radius:6px; padding:18px;">
+                <h4 style="margin:0 0 6px 0; color:#1A365D;">Stockholm & Rotterdam</h4>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> POPs & Toxic Pesticides</p>
                 <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> Dept of Agriculture & JAS</p>
-                <p style="font-size:0.82rem; color:#0284C7;"><b>Active AI Pipeline:</b> <code>chemical_index.joblib</code></p>
+                <p style="font-size:0.82rem; color:#475569;"><b>Active AI Pipeline:</b> <code>chemical_index.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
             dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [3200, 3800, 3400, 920, 280, 110, 45]})
             chart_title = "Hazardous POP Chemicals Import Dip"
 
     with col_chart:
-        fig_dip = px.line(dip_data, x="Month", y="Tons", markers=True, title=chart_title, color_discrete_sequence=["#0EA5E9"])
+        fig_dip = px.line(dip_data, x="Month", y="Tons", markers=True, title=chart_title, color_discrete_sequence=["#1A365D"])
         fig_dip.update_layout(height=260, margin=dict(l=10, r=10, t=35, b=10), paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig_dip, use_container_width=True)
 
@@ -196,8 +194,8 @@ Enforcement Logic</span>
     # --------------------------------------------------------------------------
     # 4. IMMERSIVE SOFT-GLOW THREAT RADAR MAP
     # --------------------------------------------------------------------------
-    st.markdown("### 🌍 Real-Time Regional Threat Radar")
-    st.caption("Live geographical anomaly heat map across Malaysian entry points. **Red/Cyan pulsing markers** indicate high-risk active interdictions.")
+    st.markdown("### Real-Time Regional Threat Radar")
+    st.caption("Live geographical anomaly heat map across Malaysian entry points. Pulsing markers indicate high-risk active interdictions.")
 
     leaflet_map_html = """
     <!DOCTYPE html>
@@ -206,28 +204,28 @@ Enforcement Logic</span>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <style>
-            #map { height: 420px; width: 100%; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+            #map { height: 420px; width: 100%; border-radius: 8px; border: 1px solid #CBD5E1; }
             .pulse-icon-red {
-                background: rgba(239, 68, 68, 0.9);
+                background: rgba(153, 27, 27, 0.9);
                 border-radius: 50%;
-                box-shadow: 0 0 0 rgba(239, 68, 68, 0.6);
+                box-shadow: 0 0 0 rgba(153, 27, 27, 0.6);
                 animation: pulse-red 2s infinite;
             }
-            .pulse-icon-cyan {
-                background: rgba(14, 165, 233, 0.9);
+            .pulse-icon-blue {
+                background: rgba(30, 58, 138, 0.9);
                 border-radius: 50%;
-                box-shadow: 0 0 0 rgba(14, 165, 233, 0.6);
-                animation: pulse-cyan 2s infinite;
+                box-shadow: 0 0 0 rgba(30, 58, 138, 0.6);
+                animation: pulse-blue 2s infinite;
             }
             @keyframes pulse-red {
-                0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
-                70% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+                0% { box-shadow: 0 0 0 0 rgba(153, 27, 27, 0.5); }
+                70% { box-shadow: 0 0 0 16px rgba(153, 27, 27, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(153, 27, 27, 0); }
             }
-            @keyframes pulse-cyan {
-                0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.6); }
-                70% { box-shadow: 0 0 0 16px rgba(14, 165, 233, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+            @keyframes pulse-blue {
+                0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.5); }
+                70% { box-shadow: 0 0 0 16px rgba(30, 58, 138, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
             }
         </style>
     </head>
@@ -241,15 +239,15 @@ Enforcement Logic</span>
 
             var ports = [
                 {name: "Port Klang", lat: 3.00, lon: 101.40, desc: "High Risk Plastic Scrap (HS 3915)", type: "red"},
-                {name: "Johor Port", lat: 1.45, lon: 103.75, desc: "Unlicensed ODS Gas (HS 2903)", type: "cyan"},
+                {name: "Johor Port", lat: 1.45, lon: 103.75, desc: "Unlicensed ODS Gas (HS 2903)", type: "blue"},
                 {name: "Penang Port", lat: 5.41, lon: 100.32, desc: "Illegal E-Waste (HS 8549)", type: "red"},
-                {name: "Bintulu Port", lat: 4.58, lon: 114.00, desc: "Timber CITES Mismatch (HS 4403)", type: "cyan"},
+                {name: "Bintulu Port", lat: 4.58, lon: 114.00, desc: "Timber CITES Mismatch (HS 4403)", type: "blue"},
                 {name: "KLIA Cargo", lat: 2.80, lon: 101.70, desc: "Chemical POPs Mismatch", type: "red"}
             ];
 
             ports.forEach(function(p) {
                 var pulseMarker = L.divIcon({
-                    className: p.type === 'red' ? 'pulse-icon-red' : 'pulse-icon-cyan',
+                    className: p.type === 'red' ? 'pulse-icon-red' : 'pulse-icon-blue',
                     iconSize: [12, 12]
                 });
                 L.marker([p.lat, p.lon], {icon: pulseMarker}).addTo(map)
@@ -266,16 +264,16 @@ Enforcement Logic</span>
     # --------------------------------------------------------------------------
     # 5. QUICK LAUNCH DESK
     # --------------------------------------------------------------------------
-    st.markdown("### 🚀 Platform Quick Launch Desk")
+    st.markdown("### Platform Quick Launch Desk")
     st.caption("Instantly navigate to operational modules:")
 
     btn1, btn2, btn3, btn4 = st.columns(4)
 
     with btn1:
-        st.button("🔍 Live Scanner")
+        st.button("Launch Live Scanner", key="go_scanner")
     with btn2:
-        st.button("📈 Data Studio Hub")
+        st.button("Launch Data Studio", key="go_studio")
     with btn3:
-        st.button("🤖 AI Legal Copilot")
+        st.button("Launch AI Copilot", key="go_copilot")
     with btn4:
-        st.button("📞 HITL Review Queue")
+        st.button("Launch HITL Queue", key="go_hitl")
