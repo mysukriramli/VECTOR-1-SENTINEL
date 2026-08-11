@@ -1,7 +1,7 @@
 import os
 import sys
 
-# Append current directory to Python system path to resolve subfolder imports on Streamlit Cloud
+# Resolve current directory on Streamlit Cloud for subfolder module imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import streamlit as st
@@ -30,18 +30,23 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Apply UI Styling & Initialize Session
+# Apply UI Styling & Initialize Session State
 apply_custom_styles()
 init_auth_session()
 
 # Render Navigation Sidebar
 active_page = render_sidebar()
 
-# Header Accent Banner
+# Header Accent Banner with Animated Pulse Status Pill
 col_h1, col_h2 = st.columns([3, 1])
 with col_h1:
-    st.markdown("<div class='main-header'>SENTINEL Platform</div>", unsafe_allow_html=True)
-    st.markdown("<div class='sub-header'>National Environmental Security & Trade Compliance Engine</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+        <span class="main-header">SENTINEL Platform</span>
+        <span class="intel-status-pill"><span class="pulse-dot"></span> LIVE INTEL ENGINE</span>
+    </div>
+    <div class="sub-header">National Environmental Security & Trade Compliance Engine</div>
+    """, unsafe_allow_html=True)
 with col_h2:
     st.info(f"Current Access Tier:\n**{st.session_state['user_role']}**")
 
