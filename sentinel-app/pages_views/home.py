@@ -1,6 +1,4 @@
 import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
 
 def render_home_page():
     
@@ -250,166 +248,72 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 4. MULTI-MEA TACTICAL THREAT MATRIX & INTERACTIVE RADAR CHART
+    # 4. IMMERSIVE THREAT MAP
     # --------------------------------------------------------------------------
-    st.markdown("### Multi-MEA Tactical Threat Matrix & Interactive Radar")
-    st.caption("Cross-treaty multi-variable risk signature mapping active 30-day threat profiles against 5-year BigQuery baseline averages.")
+    st.markdown("### Real-Time Regional Threat Radar")
+    st.caption("Geographical anomaly concentration mapped across Malaysian port checkpoints. Animated pulse indicators signal active holds.")
 
-    # Checkpoint Data Dictionary
-    radar_port_data = {
-        "National Aggregate (Malaysia Border Baseline)": {
-            "axes": ["Basel Waste Index", "Montreal Quota Index", "CITES Integrity Index", "Stockholm POPs Index", "OCR Anomaly Score", "Entity Route Risk"],
-            "active": [72, 68, 55, 60, 65, 58],
-            "baseline": [85, 82, 62, 70, 78, 68],
-            "primary_threat": "Multi-MEA Co-occurrence (Basel HS 3915 & Montreal HS 2903)",
-            "action": "Maintain Level-2 automated screening across major container hubs. Execute random physical sampling on high-density imports.",
-            "law": "Customs Act 1967 & Environmental Quality Act 1974 (Act 127)",
-            "health_score": "71.2 / 100"
-        },
-        "Port Klang (Selangor)": {
-            "axes": ["Basel Waste Index", "Montreal Quota Index", "CITES Integrity Index", "Stockholm POPs Index", "OCR Anomaly Score", "Entity Route Risk"],
-            "active": [94, 42, 35, 48, 88, 85],
-            "baseline": [98, 50, 40, 52, 92, 89],
-            "primary_threat": "Critical Basel Convention Violation (HS 3915 Plastic Scrap & E-Waste Slag)",
-            "action": "Issue Immediate Physical Detention Order. Dispatch Joint JAS-JKDM Inspection Team with density/value probes.",
-            "law": "Environmental Quality Act 1974 (Act 127) Sec 34A & Customs Prohibition Order",
-            "health_score": "88.4 / 100"
-        },
-        "Johor Port (Pasir Gudang)": {
-            "axes": ["Basel Waste Index", "Montreal Quota Index", "CITES Integrity Index", "Stockholm POPs Index", "OCR Anomaly Score", "Entity Route Risk"],
-            "active": [52, 91, 28, 85, 76, 78],
-            "baseline": [60, 95, 30, 88, 80, 82],
-            "primary_threat": "Elevated Montreal Protocol & Stockholm POPs Discrepancy (HS 2903 Refrigerants)",
-            "action": "Dispatch Field Team with Portable Gas Analyzer. Cross-reference MITI Import Quotas via MyGDX API.",
-            "law": "Customs (Prohibition of Imports) Order & Environmental Quality (ODS) Reg 1999",
-            "health_score": "79.2 / 100"
-        },
-        "Penang Port (Butterworth)": {
-            "axes": ["Basel Waste Index", "Montreal Quota Index", "CITES Integrity Index", "Stockholm POPs Index", "OCR Anomaly Score", "Entity Route Risk"],
-            "active": [86, 38, 22, 40, 82, 80],
-            "baseline": [92, 45, 25, 45, 88, 86],
-            "primary_threat": "E-Waste Slag Misdeclaration & Unit Value Outlier (HS 8548/8549)",
-            "action": "Execute Full Container Inspection. Verify scrap metal vs. electronic waste classification.",
-            "law": "Environmental Quality Act 1974 (Act 127) & Customs Act 1967 Sec 133",
-            "health_score": "82.1 / 100"
-        },
-        "Bintulu Port (Sarawak)": {
-            "axes": ["Basel Waste Index", "Montreal Quota Index", "CITES Integrity Index", "Stockholm POPs Index", "OCR Anomaly Score", "Entity Route Risk"],
-            "active": [25, 20, 82, 30, 62, 55],
-            "baseline": [30, 25, 88, 35, 68, 60],
-            "primary_threat": "CITES Timber Species Volume Discrepancy (HS 4403/4407)",
-            "action": "Verify CITES Export Permits with PERHILITAN/Sarawak Forestry. Conduct Volumetric Timber Audit.",
-            "law": "International Trade in Endangered Species Act 2008 (Act 686)",
-            "health_score": "64.5 / 100"
-        },
-        "KLIA Air Cargo Complex": {
-            "axes": ["Basel Waste Index", "Montreal Quota Index", "CITES Integrity Index", "Stockholm POPs Index", "OCR Anomaly Score", "Entity Route Risk"],
-            "active": [35, 62, 88, 82, 90, 84],
-            "baseline": [40, 68, 92, 86, 94, 88],
-            "primary_threat": "High-Value CITES Wildlife Contraband & Undeclared Toxic Pesticides",
-            "action": "Deploy PERHILITAN K9 Sniffer Unit & DOA Hazardous Substance Inspection Desk.",
-            "law": "Act 686 & Pesticides Act 1974 (Act 149)",
-            "health_score": "85.0 / 100"
-        }
-    }
+    leaflet_map_html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <style>
+            #map { height: 420px; width: 100%; border-radius: 8px; border: 1px solid #CBD5E1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); }
+            .pulse-icon-red {
+                background: rgba(153, 27, 27, 0.9);
+                border-radius: 50%;
+                box-shadow: 0 0 0 rgba(153, 27, 27, 0.6);
+                animation: pulse-red 2s infinite;
+            }
+            .pulse-icon-blue {
+                background: rgba(30, 58, 138, 0.9);
+                border-radius: 50%;
+                box-shadow: 0 0 0 rgba(30, 58, 138, 0.6);
+                animation: pulse-blue 2s infinite;
+            }
+            @keyframes pulse-red {
+                0% { box-shadow: 0 0 0 0 rgba(153, 27, 27, 0.5); }
+                70% { box-shadow: 0 0 0 16px rgba(153, 27, 27, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(153, 27, 27, 0); }
+            }
+            @keyframes pulse-blue {
+                0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.5); }
+                70% { box-shadow: 0 0 0 16px rgba(30, 58, 138, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var map = L.map('map').setView([4.2, 108.0], 5.5);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
 
-    # Checkpoint Switcher
-    col_sel1, col_sel2 = st.columns([2, 1])
-    with col_sel1:
-        selected_checkpoint = st.selectbox(
-            "Select Entry Checkpoint / Jurisdiction:",
-            list(radar_port_data.keys()),
-            index=1
-        )
+            var ports = [
+                {name: "Port Klang", lat: 3.00, lon: 101.40, desc: "High Risk Plastic Scrap (HS 3915)", type: "red"},
+                {name: "Johor Port", lat: 1.45, lon: 103.75, desc: "Unlicensed ODS Gas (HS 2903)", type: "blue"},
+                {name: "Penang Port", lat: 5.41, lon: 100.32, desc: "Illegal E-Waste (HS 8549)", type: "red"},
+                {name: "Bintulu Port", lat: 4.58, lon: 114.00, desc: "Timber CITES Mismatch (HS 4403)", type: "blue"},
+                {name: "KLIA Cargo", lat: 2.80, lon: 101.70, desc: "Chemical POPs Mismatch", type: "red"}
+            ];
 
-    port_info = radar_port_data[selected_checkpoint]
-
-    # Layout: Radar Chart (Left) vs. Directive Panel (Right)
-    col_radar, col_directive = st.columns([1.3, 1])
-
-    with col_radar:
-        axes = port_info["axes"]
-        active_val = port_info["active"]
-        base_val = port_info["baseline"]
-
-        fig_radar = go.Figure()
-
-        # Historical 5-Year Baseline Polygon
-        fig_radar.add_trace(go.Scatterpolar(
-            r=base_val + [base_val[0]],
-            theta=axes + [axes[0]],
-            fill='toself',
-            fillcolor='rgba(100, 116, 139, 0.1)',
-            line=dict(color='#64748B', width=2, dash='dash'),
-            name='5-Year Baseline Avg (2020-2025)'
-        ))
-
-        # Active 30-Day Threat Polygon
-        fig_radar.add_trace(go.Scatterpolar(
-            r=active_val + [active_val[0]],
-            theta=axes + [axes[0]],
-            fill='toself',
-            fillcolor='rgba(26, 54, 93, 0.28)',
-            line=dict(color='#1A365D', width=3),
-            name='Active 30-Day Risk Level'
-        ))
-
-        fig_radar.update_layout(
-            polar=dict(
-                radialaxis=dict(
-                    visible=True,
-                    range=[0, 100],
-                    tickfont=dict(size=10, color="#64748B"),
-                    gridcolor="#E2E8F0"
-                ),
-                angularaxis=dict(
-                    tickfont=dict(size=11, color="#0F172A", weight="bold"),
-                    gridcolor="#E2E8F0"
-                ),
-                bgcolor="rgba(255, 255, 255, 0.9)"
-            ),
-            showlegend=True,
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=-0.2,
-                xanchor="center",
-                x=0.5
-            ),
-            margin=dict(l=40, r=40, t=20, b=40),
-            height=380,
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)"
-        )
-
-        st.plotly_chart(fig_radar, use_container_width=True)
-
-    with col_directive:
-        st.markdown(f"""
-        <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #1A365D; border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.03); height:100%;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <span class="figma-badge">TACTICAL INTERDICTION DIRECTIVE</span>
-                <span style="font-size:0.85rem; font-weight:800; color:#1A365D; font-family:'JetBrains Mono', monospace;">RISK INDEX: {port_info['health_score']}</span>
-            </div>
-            
-            <h5 style="margin:0 0 12px 0; color:#1A365D; font-weight:800; font-size:1.1rem;">{selected_checkpoint}</h5>
-            
-            <div style="margin-bottom:14px;">
-                <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.5px;">Primary Multi-MEA Threat:</div>
-                <div style="font-size:0.88rem; font-weight:700; color:#0F172A; margin-top:3px;">{port_info['primary_threat']}</div>
-            </div>
-
-            <div style="margin-bottom:14px;">
-                <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.5px;">Mandatory Tactical Action:</div>
-                <div style="font-size:0.85rem; color:#334155; margin-top:3px; line-height:1.4;">{port_info['action']}</div>
-            </div>
-
-            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; margin-top:16px;">
-                <div style="font-size:0.72rem; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.5px;">Statutory Enforcement Authority:</div>
-                <div style="font-size:0.82rem; font-weight:700; color:#1E3A8A; margin-top:3px;">{port_info['law']}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            ports.forEach(function(p) {
+                var pulseMarker = L.divIcon({
+                    className: p.type === 'red' ? 'pulse-icon-red' : 'pulse-icon-blue',
+                    iconSize: [12, 12]
+                });
+                L.marker([p.lat, p.lon], {icon: pulseMarker}).addTo(map)
+                    .bindPopup("<div style='font-family:sans-serif;'><b>" + p.name + "</b><br>" + p.desc + "</div>");
+            });
+        </script>
+    </body>
+    </html>
+    """
+    st.components.v1.html(leaflet_map_html, height=440)
 
     st.markdown("---")
 
