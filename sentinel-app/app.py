@@ -38,6 +38,13 @@ except (ImportError, ModuleNotFoundError, KeyError):
     def render_publications_page():
         st.warning("⚠️ `pages_views/publications.py` is loading or unavailable. Please refresh.")
 
+# Defensive import for GCP Architecture
+try:
+    from pages_views.architecture import render_architecture_page
+except (ImportError, ModuleNotFoundError, KeyError):
+    def render_architecture_page():
+        st.warning("⚠️ `pages_views/architecture.py` is loading or unavailable. Please refresh.")
+
 st.set_page_config(
     page_title="SENTINEL Platform",
     layout="wide",
@@ -67,6 +74,8 @@ if "Home Overview" in active_page:
     render_home_page()
 elif "About SENTINEL" in active_page:
     render_about_page()
+elif "GCP Architecture" in active_page:
+    render_architecture_page()
 elif "Publications" in active_page:
     render_publications_page()
 elif "Public Threat Map" in active_page:
