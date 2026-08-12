@@ -197,7 +197,7 @@ def render_home_page():
             with tab_plastic:
                 st.components.v1.iframe(
                     "https://datastudio.google.com/embed/reporting/02b9ef5e-618a-470c-bcaf-30d6ffd23487/page/HsE6F",
-                    height=450,
+                    height=550,
                     scrolling=True
                 )
             
