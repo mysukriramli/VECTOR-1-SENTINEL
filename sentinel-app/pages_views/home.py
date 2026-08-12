@@ -248,72 +248,163 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 4. IMMERSIVE THREAT MAP
+    # 4. DYNAMIC ILLUSTRATIVE MEA RADAR SWEEP (HTML5 CANVAS MATRIX)
     # --------------------------------------------------------------------------
-    st.markdown("### Real-Time Regional Threat Radar")
-    st.caption("Geographical anomaly concentration mapped across Malaysian port checkpoints. Animated pulse indicators signal active holds.")
+    st.markdown("### Real-Time Multilateral Environmental Agreement (MEA) Security Radar")
+    st.caption("360° automated digital sweep matrix scanning active shipment declarations across national port checkpoints for MEA non-compliance.")
 
-    leaflet_map_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        <style>
-            #map { height: 420px; width: 100%; border-radius: 8px; border: 1px solid #CBD5E1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); }
-            .pulse-icon-red {
-                background: rgba(153, 27, 27, 0.9);
-                border-radius: 50%;
-                box-shadow: 0 0 0 rgba(153, 27, 27, 0.6);
-                animation: pulse-red 2s infinite;
-            }
-            .pulse-icon-blue {
-                background: rgba(30, 58, 138, 0.9);
-                border-radius: 50%;
-                box-shadow: 0 0 0 rgba(30, 58, 138, 0.6);
-                animation: pulse-blue 2s infinite;
-            }
-            @keyframes pulse-red {
-                0% { box-shadow: 0 0 0 0 rgba(153, 27, 27, 0.5); }
-                70% { box-shadow: 0 0 0 16px rgba(153, 27, 27, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(153, 27, 27, 0); }
-            }
-            @keyframes pulse-blue {
-                0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.5); }
-                70% { box-shadow: 0 0 0 16px rgba(30, 58, 138, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
-            }
-        </style>
-    </head>
-    <body>
-        <div id="map"></div>
-        <script>
-            var map = L.map('map').setView([4.2, 108.0], 5.5);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap'
-            }).addTo(map);
+    radar_html = """
+    <div style="position: relative; width: 100%; height: 450px; border-radius: 12px; overflow: hidden; background: #0A1120; border: 1px solid #1E293B; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);">
+        <canvas id="meaSweepCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+        
+        <!-- Live Status Overlay -->
+        <div style="position: absolute; top: 16px; left: 20px; font-family: 'JetBrains Mono', monospace; pointer-events: none;">
+            <div style="color: #38BDF8; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px;">SYSTEM STATUS: SCANNING</div>
+            <div style="color: #94A3B8; font-size: 0.72rem; margin-top: 2px;">FREQUENCY: 2.4 GHz &middot; BigQuery Stream Active</div>
+        </div>
 
-            var ports = [
-                {name: "Port Klang", lat: 3.00, lon: 101.40, desc: "High Risk Plastic Scrap (HS 3915)", type: "red"},
-                {name: "Johor Port", lat: 1.45, lon: 103.75, desc: "Unlicensed ODS Gas (HS 2903)", type: "blue"},
-                {name: "Penang Port", lat: 5.41, lon: 100.32, desc: "Illegal E-Waste (HS 8549)", type: "red"},
-                {name: "Bintulu Port", lat: 4.58, lon: 114.00, desc: "Timber CITES Mismatch (HS 4403)", type: "blue"},
-                {name: "KLIA Cargo", lat: 2.80, lon: 101.70, desc: "Chemical POPs Mismatch", type: "red"}
-            ];
+        <div style="position: absolute; top: 16px; right: 20px; font-family: 'JetBrains Mono', monospace; text-align: right; pointer-events: none;">
+            <div style="color: #4ADE80; font-size: 0.78rem; font-weight: 700;">LIVE ACQUISITIONS: 5 LOCKS</div>
+            <div style="color: #CBD5E1; font-size: 0.7rem; margin-top: 2px;">JAS / JKDM / MITI / PERHILITAN</div>
+        </div>
+    </div>
 
-            ports.forEach(function(p) {
-                var pulseMarker = L.divIcon({
-                    className: p.type === 'red' ? 'pulse-icon-red' : 'pulse-icon-blue',
-                    iconSize: [12, 12]
-                });
-                L.marker([p.lat, p.lon], {icon: pulseMarker}).addTo(map)
-                    .bindPopup("<div style='font-family:sans-serif;'><b>" + p.name + "</b><br>" + p.desc + "</div>");
+    <script>
+        const rCanvas = document.getElementById('meaSweepCanvas');
+        const rCtx = rCanvas.getContext('2d');
+        let rWidth, rHeight, centerX, centerY, maxRadius;
+        let sweepAngle = 0;
+
+        // Target MEA Checkpoints (Angle in radians, distance factor 0.2 to 0.85)
+        const meaTargets = [
+            { name: "Port Klang", mea: "Basel Convention (Plastic HS 3915)", angle: 0.8, dist: 0.65, status: "HIGH RISK", color: "#EF4444", code: "3915.10" },
+            { name: "Johor Port", mea: "Montreal Protocol (ODS HS 2903)", angle: 2.1, dist: 0.45, status: "WARNING", color: "#F59E0B", code: "2903.42" },
+            { name: "Penang Port", mea: "Basel Convention (E-Waste HS 8549)", angle: 3.5, dist: 0.75, status: "HIGH RISK", color: "#EF4444", code: "8549.21" },
+            { name: "Bintulu Port", mea: "CITES Framework (Timber HS 4403)", angle: 4.8, dist: 0.55, status: "MODERATE", color: "#3B82F6", code: "4403.49" },
+            { name: "KLIA Cargo", mea: "Stockholm POPs (Chemicals)", angle: 5.9, dist: 0.35, status: "HIGH RISK", color: "#EF4444", code: "3808.91" }
+        ];
+
+        function resizeRadar() {
+            rWidth = rCanvas.width = rCanvas.offsetWidth;
+            rHeight = rCanvas.height = rCanvas.offsetHeight;
+            centerX = rWidth / 2;
+            centerY = rHeight / 2;
+            maxRadius = Math.min(centerX, centerY) - 25;
+        }
+        window.addEventListener('resize', resizeRadar);
+        resizeRadar();
+
+        function drawMatrixGrid() {
+            // Radial Grid Circles
+            rCtx.strokeStyle = "rgba(56, 189, 248, 0.18)";
+            rCtx.lineWidth = 1;
+            for (let i = 1; i <= 4; i++) {
+                rCtx.beginPath();
+                rCtx.arc(centerX, centerY, (maxRadius / 4) * i, 0, Math.PI * 2);
+                rCtx.stroke();
+            }
+
+            // Crosshair Axes
+            rCtx.beginPath();
+            rCtx.moveTo(centerX - maxRadius, centerY);
+            rCtx.lineTo(centerX + maxRadius, centerY);
+            rCtx.moveTo(centerX, centerY - maxRadius);
+            rCtx.lineTo(centerX, centerY + maxRadius);
+            rCtx.strokeStyle = "rgba(56, 189, 248, 0.22)";
+            rCtx.stroke();
+
+            // Diagonal Grid Lines
+            rCtx.beginPath();
+            rCtx.moveTo(centerX - maxRadius * 0.707, centerY - maxRadius * 0.707);
+            rCtx.lineTo(centerX + maxRadius * 0.707, centerY + maxRadius * 0.707);
+            rCtx.moveTo(centerX - maxRadius * 0.707, centerY + maxRadius * 0.707);
+            rCtx.lineTo(centerX + maxRadius * 0.707, centerY - maxRadius * 0.707);
+            rCtx.strokeStyle = "rgba(56, 189, 248, 0.1)";
+            rCtx.stroke();
+        }
+
+        function drawRadarSweep() {
+            // Sweeping Radar Cone Gradient
+            const gradient = rCtx.createConicGradient(sweepAngle, centerX, centerY);
+            gradient.addColorStop(0, "rgba(56, 189, 248, 0.35)");
+            gradient.addColorStop(0.12, "rgba(56, 189, 248, 0.08)");
+            gradient.addColorStop(0.25, "rgba(56, 189, 248, 0.0)");
+            gradient.addColorStop(1, "rgba(56, 189, 248, 0.0)");
+
+            rCtx.fillStyle = gradient;
+            rCtx.beginPath();
+            rCtx.arc(centerX, centerY, maxRadius, 0, Math.PI * 2);
+            rCtx.fill();
+
+            // Sweeping Leading Edge Line
+            rCtx.beginPath();
+            rCtx.moveTo(centerX, centerY);
+            rCtx.lineTo(centerX + maxRadius * Math.cos(sweepAngle), centerY + maxRadius * Math.sin(sweepAngle));
+            rCtx.strokeStyle = "rgba(56, 189, 248, 0.85)";
+            rCtx.lineWidth = 2;
+            rCtx.stroke();
+        }
+
+        function drawTargets() {
+            meaTargets.forEach(target => {
+                const tx = centerX + target.dist * maxRadius * Math.cos(target.angle);
+                const ty = centerY + target.dist * maxRadius * Math.sin(target.angle);
+
+                // Calculate angular distance between sweep and target angle
+                let angleDiff = Math.abs(sweepAngle - target.angle) % (Math.PI * 2);
+                if (angleDiff > Math.PI) angleDiff = Math.PI * 2 - angleDiff;
+
+                const isHit = angleDiff < 0.25;
+
+                // Target Outer Ring
+                rCtx.beginPath();
+                rCtx.arc(tx, ty, isHit ? 10 : 6, 0, Math.PI * 2);
+                rCtx.strokeStyle = target.color;
+                rCtx.lineWidth = isHit ? 2 : 1.2;
+                rCtx.stroke();
+
+                // Target Core Dot
+                rCtx.beginPath();
+                rCtx.arc(tx, ty, 3, 0, Math.PI * 2);
+                rCtx.fillStyle = target.color;
+                rCtx.fill();
+
+                // Target Crosshair Lock Box on Sweep Hit
+                if (isHit) {
+                    rCtx.strokeStyle = "rgba(56, 189, 248, 0.9)";
+                    rCtx.strokeRect(tx - 12, ty - 12, 24, 24);
+
+                    // Text Label
+                    rCtx.font = "700 11px 'JetBrains Mono', monospace";
+                    rCtx.fillStyle = "#F8FAFC";
+                    rCtx.fillText(target.name + " [" + target.code + "]", tx + 16, ty - 2);
+                    rCtx.font = "500 10px sans-serif";
+                    rCtx.fillStyle = target.color;
+                    rCtx.fillText(target.mea, tx + 16, ty + 10);
+                } else {
+                    // Persistent Subtle Label
+                    rCtx.font = "600 10px 'JetBrains Mono', monospace";
+                    rCtx.fillStyle = "rgba(203, 213, 225, 0.6)";
+                    rCtx.fillText(target.name, tx + 10, ty + 3);
+                }
             });
-        </script>
-    </body>
-    </html>
+        }
+
+        function animateRadar() {
+            rCtx.clearRect(0, 0, rWidth, rHeight);
+            drawMatrixGrid();
+            drawRadarSweep();
+            drawTargets();
+
+            sweepAngle += 0.02;
+            if (sweepAngle > Math.PI * 2) sweepAngle = 0;
+
+            requestAnimationFrame(animateRadar);
+        }
+        animateRadar();
+    </script>
     """
-    st.components.v1.html(leaflet_map_html, height=440)
+    st.components.v1.html(radar_html, height=460)
 
     st.markdown("---")
 
