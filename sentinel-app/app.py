@@ -1,17 +1,26 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Dynamically prepend app directory to sys.path before importing local modules
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+if APP_DIR not in sys.path:
+    sys.path.insert(0, APP_DIR)
 
 import streamlit as st
-from styles import apply_custom_styles
+
+# Safe import resolution for styles to prevent KeyError: 'styles' on Streamlit Cloud
+try:
+    from styles import apply_custom_styles
+except (ImportError, KeyError):
+    import styles
+    apply_custom_styles = styles.apply_custom_styles
+
 from components.auth import init_auth_session
 from components.navbar import render_sidebar
 
 # Page View Renderers
 from pages_views.home import render_home_page
 from pages_views.about import render_about_page
-from pages_views.publications import render_publications_page
 from pages_views.public_insights import render_public_insights_page
 from pages_views.anomaly_inspector import render_anomaly_inspector_page
 from pages_views.datastudio_catalog import render_datastudio_catalog_page
@@ -21,6 +30,13 @@ from pages_views.training_module import render_training_module_page
 from pages_views.admin_governance import render_admin_governance_page
 from pages_views.faq import render_faq_page
 from pages_views.contact import render_contact_page
+
+# Defensive import for Publications
+try:
+    from pages_views.publications import render_publications_page
+except (ImportError, ModuleNotFoundError, KeyError):
+    def render_publications_page():
+        st.warning("⚠️ `pages_views/publications.py` is loading or unavailable. Please refresh.")
 
 st.set_page_config(
     page_title="SENTINEL Platform",
