@@ -1,11 +1,9 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
 
 def render_home_page():
     
     # --------------------------------------------------------------------------
-    # 1. HERO SECTION: INTERACTIVE HTML5 NEURAL MESH (BRAND BLUE)
+    # 1. HERO SECTION: INTERACTIVE HTML5 NEURAL CANVAS
     # --------------------------------------------------------------------------
     html_hero = """
     <div style="position: relative; width: 100%; height: 320px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%); border: 1px solid #E2E8F0; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);">
@@ -112,7 +110,7 @@ def render_home_page():
     st.components.v1.html(html_hero, height=330)
 
     # --------------------------------------------------------------------------
-    # 2. DYNAMIC ACCESS LEVEL BANNER
+    # 2. DYNAMIC ACCESS LEVEL BANNER & METRICS
     # --------------------------------------------------------------------------
     role = st.session_state.get("user_role", "Public (Free)")
     
@@ -123,7 +121,6 @@ def render_home_page():
     else:
         st.markdown("<div class='tier-pill-admin'><b>Access Clearance Level 3: Root Admin Access</b> &mdash; Unlocked BigQuery Warehouse (2020&ndash;2026), SHA-256 Checksums, and Model Controls.</div>", unsafe_allow_html=True)
 
-    # Metric Row
     m1, m2, m3, m4 = st.columns(4)
     m1.metric("Audited Declarations", "142,890", "12.4% YoY")
     m2.metric("Overall Anomaly Rate", "4.12%", "-0.8% YoY")
@@ -133,87 +130,141 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 3. INTERACTIVE MEA IMPACT STUDIO (FIGMA BENTO GRID)
+    # 3. REAL LOOKER STUDIO MEA ENFORCEMENT IMPACT STUDIO
     # --------------------------------------------------------------------------
     st.markdown("### Interactive MEA Enforcement Impact Studio")
-    st.caption("Select a treaty framework below to dynamically load enforcement parameters, target tariff domains, and trade volume dips:")
+    st.caption("Select a treaty framework below to dynamically load enforcement parameters, target tariff domains, and live Looker Studio analytics dashboards:")
 
     selected_mea = st.radio(
         "Choose MEA Framework to Inspect:",
-        ["Basel Convention", "Montreal Protocol", "CITES Framework", "Stockholm/Rotterdam"],
+        ["Basel Convention", "Montreal Protocol", "CITES Framework", "Stockholm / Rotterdam"],
         horizontal=True
     )
 
-    col_info, col_chart = st.columns([1, 1.25])
+    col_info, col_chart = st.columns([1, 1.6])
 
+    # Dynamic Metadata Card (Left Column)
     with col_info:
         if "Basel" in selected_mea:
             st.markdown("""
             <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #1A365D; border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
                 <div class="figma-badge" style="margin-bottom:8px;">Protocol Scope: Hazardous Waste</div>
                 <h4 style="margin:0 0 8px 0; color:#1A365D; font-size:1.15rem; font-weight:800;">Basel Convention</h4>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 3915 (Plastic Scrap), HS 8548/8549 (E-Waste Slag)</p>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> Department of Environment (JAS) & JKDM Customs</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Target Tariff Domains:</b> HS 3915 (Plastic Scrap), HS 8548/8549 (E-Waste Slag)</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Lead Enforcement Agency:</b> Department of Environment (JAS) & JKDM Customs</p>
                 <p style="font-size:0.82rem; color:#475569; margin:0;"><b>Inference Pipeline:</b> <code>plastic_forensic_pipeline.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
-            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [14200, 15800, 13900, 4100, 1200, 850, 410]})
-            chart_title = "HS 3915.10 (Plastic Waste) Import Volume Dip"
 
         elif "Montreal" in selected_mea:
             st.markdown("""
             <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #2563EB; border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
                 <div class="figma-badge" style="margin-bottom:8px;">Protocol Scope: Ozone Layer</div>
                 <h4 style="margin:0 0 8px 0; color:#1A365D; font-size:1.15rem; font-weight:800;">Montreal Protocol</h4>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 2903 (CFCs, HCFCs, HFC Refrigerants)</p>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> JAS & MITI</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Target Tariff Domains:</b> HS 2903 (CFCs, HCFCs, HFC Refrigerants)</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Lead Enforcement Agency:</b> JAS & MITI</p>
                 <p style="font-size:0.82rem; color:#475569; margin:0;"><b>Inference Pipeline:</b> <code>ods_forensic_pipeline.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
-            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [8500, 9200, 8800, 2900, 950, 420, 180]})
-            chart_title = "HS 2903.42 (HCFC-22 Gases) Import Volume Dip"
 
         elif "CITES" in selected_mea:
             st.markdown("""
             <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #334155; border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
                 <div class="figma-badge" style="margin-bottom:8px;">Protocol Scope: Species Protection</div>
                 <h4 style="margin:0 0 8px 0; color:#1A365D; font-size:1.15rem; font-weight:800;">CITES Framework</h4>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> HS 0106 (Fauna), HS 4403 (Timber)</p>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> PERHILITAN & MAQIS</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Target Tariff Domains:</b> HS 0106 (Fauna), HS 4403 (Timber)</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Lead Enforcement Agency:</b> PERHILITAN & MAQIS</p>
                 <p style="font-size:0.82rem; color:#475569; margin:0;"><b>Inference Pipeline:</b> <code>species_discrepancy.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
-            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [5400, 6100, 5800, 1800, 620, 310, 120]})
-            chart_title = "HS 4403.49 (Protected Timber) Unlicensed Dip"
 
         else:
             st.markdown("""
             <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #64748B; border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
                 <div class="figma-badge" style="margin-bottom:8px;">Protocol Scope: Chemical Safety</div>
                 <h4 style="margin:0 0 8px 0; color:#1A365D; font-size:1.15rem; font-weight:800;">Stockholm & Rotterdam</h4>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Target Tariff Domains:</b> POPs & Toxic Pesticides</p>
-                <p style="font-size:0.85rem; color:#334155; margin-bottom:6px;"><b>Lead Enforcement Agency:</b> Dept of Agriculture & JAS</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Target Tariff Domains:</b> POPs & Toxic Pesticides</p>
+                <p style="font-size:0.85rem; color:#334155; margin-bottom:8px;"><b>Lead Enforcement Agency:</b> Dept of Agriculture & JAS</p>
                 <p style="font-size:0.82rem; color:#475569; margin:0;"><b>Inference Pipeline:</b> <code>chemical_index.joblib</code></p>
             </div>
             """, unsafe_allow_html=True)
-            dip_data = pd.DataFrame({"Month": ["Jan", "Feb", "Mar", "Apr (AI Live)", "May", "Jun", "Jul"], "Tons": [3200, 3800, 3400, 920, 280, 110, 45]})
-            chart_title = "Hazardous POP Chemicals Import Dip"
 
+    # Embedded Real Looker Studio Dashboards (Right Column)
     with col_chart:
-        fig_dip = px.line(dip_data, x="Month", y="Tons", markers=True, title=chart_title, color_discrete_sequence=["#1A365D"])
-        fig_dip.update_layout(
-            height=260, 
-            margin=dict(l=10, r=10, t=35, b=10), 
-            paper_bgcolor="rgba(0,0,0,0)", 
-            plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(family="Plus Jakarta Sans", size=12)
-        )
-        st.plotly_chart(fig_dip, use_container_width=True)
+        if "Basel" in selected_mea:
+            tab_plastic, tab_ewaste = st.tabs(["Plastic Waste (HS 3915)", "E-Waste (HS 8548/8549)"])
+            
+            with tab_plastic:
+                st.components.v1.iframe(
+                    "https://datastudio.google.com/embed/reporting/02b9ef5e-618a-470c-bcaf-30d6ffd23487/page/HsE6F",
+                    height=450,
+                    scrolling=True
+                )
+            
+            with tab_ewaste:
+                st.markdown("""
+                <div style="background:#FFFFFF; border:1px dashed #CBD5E1; border-radius:8px; padding:40px; text-align:center; min-height:380px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                    <div style="font-size:0.85rem; font-weight:800; color:#2563EB; font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                        SYSTEM STATUS: UNDER CONSTRUCTION
+                    </div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#1A365D; margin-bottom:6px;">
+                        E-Waste (HS 8548/8549) Live Data Studio Dashboard
+                    </div>
+                    <div style="font-size:0.85rem; color:#64748B; max-width:480px;">
+                        Data pipeline synchronization in progress. BigQuery historical tables are active; Looker Studio reporting canvas is currently being provisioned for production release.
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        elif "Montreal" in selected_mea:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px dashed #CBD5E1; border-radius:8px; padding:40px; text-align:center; min-height:380px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <div style="font-size:0.85rem; font-weight:800; color:#2563EB; font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                    SYSTEM STATUS: UNDER CONSTRUCTION
+                </div>
+                <div style="font-size:1.1rem; font-weight:800; color:#1A365D; margin-bottom:6px;">
+                    Montreal Protocol (HS 2903) Live Data Studio Dashboard
+                </div>
+                <div style="font-size:0.85rem; color:#64748B; max-width:480px;">
+                    Data pipeline synchronization in progress. BigQuery historical tables are active; Looker Studio reporting canvas is currently being provisioned for production release.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        elif "CITES" in selected_mea:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px dashed #CBD5E1; border-radius:8px; padding:40px; text-align:center; min-height:380px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <div style="font-size:0.85rem; font-weight:800; color:#2563EB; font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                    SYSTEM STATUS: UNDER CONSTRUCTION
+                </div>
+                <div style="font-size:1.1rem; font-weight:800; color:#1A365D; margin-bottom:6px;">
+                    CITES Framework Timber & Wildlife Dashboard
+                </div>
+                <div style="font-size:0.85rem; color:#64748B; max-width:480px;">
+                    Data pipeline synchronization in progress. BigQuery historical tables are active; Looker Studio reporting canvas is currently being provisioned for production release.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        else:
+            st.markdown("""
+            <div style="background:#FFFFFF; border:1px dashed #CBD5E1; border-radius:8px; padding:40px; text-align:center; min-height:380px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <div style="font-size:0.85rem; font-weight:800; color:#2563EB; font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                    SYSTEM STATUS: UNDER CONSTRUCTION
+                </div>
+                <div style="font-size:1.1rem; font-weight:800; color:#1A365D; margin-bottom:6px;">
+                    Stockholm & Rotterdam POPs Chemical Dashboard
+                </div>
+                <div style="font-size:0.85rem; color:#64748B; max-width:480px;">
+                    Data pipeline synchronization in progress. BigQuery historical tables are active; Looker Studio reporting canvas is currently being provisioned for production release.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 4. IMMERSIVE THREAT MAP (LIGHT CARTO STYLE)
+    # 4. IMMERSIVE THREAT MAP
     # --------------------------------------------------------------------------
     st.markdown("### Real-Time Regional Threat Radar")
     st.caption("Geographical anomaly concentration mapped across Malaysian port checkpoints. Animated pulse indicators signal active holds.")
@@ -283,10 +334,10 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 5. FIGMA BENTO BOKES QUICK LAUNCH
+    # 5. QUICK LAUNCH DESK
     # --------------------------------------------------------------------------
     st.markdown("### Platform Quick Launch Operations")
-    st.caption("Direct operational module launch desk:")
+    st.caption("Instantly navigate to operational modules:")
 
     btn1, btn2, btn3, btn4 = st.columns(4)
 
