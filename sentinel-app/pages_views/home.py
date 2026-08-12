@@ -12,16 +12,16 @@ def render_home_page():
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 88%;">
             <div style="margin-bottom: 12px;">
                 <span style="background: #FFFFFF; color: #1A365D; border: 1px solid #CBD5E1; padding: 5px 14px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
-                    NATIONAL TRADE COMPLIANCE ENGINE &middot; VERSION 2.4
+                    NATIONAL ENVIRONMENTAL TRADE COMPLIANCE ENGINE &middot; VERSION 2.4
                 </span>
             </div>
             
             <h1 style="font-size: 2.3rem; font-weight: 800; color: #1A365D; margin: 0; letter-spacing: -0.5px; line-height: 1.2;">
-                SENTINEL Intelligence Nexus
+                SENTINEL Trade Intelligence
             </h1>
             
             <p style="font-size: 1.05rem; color: #475569; margin-top: 10px; font-weight: 500; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">
-                Centralized machine learning architecture screening cross-border shipments against Multilateral Environmental Agreements (MEAs). Automated detection of non-compliant waste, hazardous chemicals, and illicit trade flows.
+                Smart Environmental Nexus for Trade Intelligence and Networked Enforcement Logic
             </p>
         </div>
     </div>
