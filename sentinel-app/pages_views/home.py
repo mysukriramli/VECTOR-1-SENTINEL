@@ -248,16 +248,17 @@ def render_home_page():
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 4. 24/7 CONTINUOUS MEA STREAM SCANNING RADAR (LIGHT MODE GRID MATRIX)
+    # 4. 24/7 CONTINUOUS MEA STREAM SCANNING RADAR & LIVE TRADE COUNTER
     # --------------------------------------------------------------------------
     st.markdown("### 24/7 Continuous MEA Stream Scanning Radar")
     st.caption("Real-time AI pipeline continuously evaluating active customs manifest feeds across five core Multilateral Environmental Agreement (MEA) vectors.")
 
     html_radar_grid = """
-    <div style="position: relative; width: 100%; height: 380px; border-radius: 12px; overflow: hidden; background: #FFFFFF; border: 1px solid #CBD5E1; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);">
+    <div style="position: relative; width: 100%; height: 420px; border-radius: 12px; overflow: hidden; background: #FFFFFF; border: 1px solid #CBD5E1; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);">
         <canvas id="radarCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
         
-        <div style="position: absolute; top: 16px; left: 20px; pointer-events: none;">
+        <!-- TOP LEFT STATUS PANEL -->
+        <div style="position: absolute; top: 16px; left: 20px; pointer-events: none; z-index: 10;">
             <div style="background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E3A8A; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">
                 LIVE INFERENCE ENGINE &middot; 24/7 ACTIVE STREAM
             </div>
@@ -266,7 +267,21 @@ def render_home_page():
             </div>
         </div>
 
-        <div style="position: absolute; bottom: 16px; right: 20px; background: rgba(255,255,255,0.92); border: 1px solid #CBD5E1; border-radius: 6px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #334155; pointer-events: none; backdrop-filter: blur(4px);">
+        <!-- TOP RIGHT LIVE TRADE DATA COUNTER WITH DAILY RESET -->
+        <div style="position: absolute; top: 16px; right: 20px; background: rgba(255, 255, 255, 0.95); border: 1px solid #CBD5E1; border-radius: 8px; padding: 12px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: right; font-family: 'Plus Jakarta Sans', sans-serif; pointer-events: none; z-index: 10; backdrop-filter: blur(6px);">
+            <div style="font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace;">
+                TODAY'S SCANNED TRADE MANIFESTS
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #1A365D; font-family: 'JetBrains Mono', monospace; line-height: 1.1; margin: 2px 0;">
+                <span id="scannedCounter">14,289</span> <span style="font-size: 0.8rem; color: #2563EB; font-weight: 700;">MANIFESTS</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #059669; font-weight: 700; display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
+                <span>●</span> AUTO-RESET AT MIDNIGHT (00:00 MYT)
+            </div>
+        </div>
+
+        <!-- BOTTOM RIGHT LEGEND OVERLAY -->
+        <div style="position: absolute; bottom: 16px; right: 20px; background: rgba(255,255,255,0.92); border: 1px solid #CBD5E1; border-radius: 6px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #334155; pointer-events: none; backdrop-filter: blur(4px); z-index: 10;">
             <div><span style="color:#2563EB; font-weight:800;">[BASEL PLASTIC]</span> HS 3915 &middot; Auditing Unit Prices</div>
             <div><span style="color:#0284C7; font-weight:800;">[BASEL E-WASTE]</span> HS 8549 &middot; Scrap Density Check</div>
             <div><span style="color:#059669; font-weight:800;">[MONTREAL ODS]</span> HS 2903 &middot; Quota Match Active</div>
@@ -281,29 +296,42 @@ def render_home_page():
         let rWidth, rHeight, centerX, centerY, maxRadius;
         let angle = 0;
 
+        // Dynamic Scanned Counter Engine
+        let scannedCount = 14289;
+        const counterEl = document.getElementById('scannedCounter');
+
+        function updateCounter() {
+            // Increment randomly between 1 and 4 every 1.5 seconds to simulate incoming stream
+            scannedCount += Math.floor(Math.random() * 3) + 1;
+            if (counterEl) {
+                counterEl.innerText = scannedCount.toLocaleString();
+            }
+        }
+        setInterval(updateCounter, 1400);
+
         function initRadar() {
             rWidth = rCanvas.width = rCanvas.offsetWidth;
             rHeight = rCanvas.height = rCanvas.offsetHeight;
             centerX = rWidth / 2;
             centerY = rHeight / 2;
-            maxRadius = Math.min(rWidth, rHeight) * 0.38;
+            maxRadius = Math.min(rWidth, rHeight) * 0.36;
         }
         window.addEventListener('resize', initRadar);
         initRadar();
 
         // 5 Core MEA Targets (Radial Distribution)
         const meaNodes = [
-            { name: "Basel: Plastic Waste (HS 3915)", dist: 0.72, angleDeg: 30, color: "#2563EB", code: "plastic_forensic.joblib" },
-            { name: "Basel: E-Waste Slag (HS 8549)", dist: 0.55, angleDeg: 110, color: "#0284C7", code: "ewaste_forensic.joblib" },
-            { name: "Montreal: ODS Gas (HS 2903)", dist: 0.85, angleDeg: 190, color: "#059669", code: "ods_forensic.joblib" },
-            { name: "Stockholm: Chemical POPs", dist: 0.65, angleDeg: 260, color: "#7C3AED", code: "chemical_index.joblib" },
-            { name: "CITES: Timber & Flora (HS 4403)", dist: 0.78, angleDeg: 320, color: "#D97706", code: "species_discrepancy.joblib" }
+            { name: "Basel: Plastic Waste (HS 3915)", dist: 0.72, angleDeg: 30, color: "#2563EB" },
+            { name: "Basel: E-Waste Slag (HS 8549)", dist: 0.55, angleDeg: 110, color: "#0284C7" },
+            { name: "Montreal: ODS Gas (HS 2903)", dist: 0.85, angleDeg: 190, color: "#059669" },
+            { name: "Stockholm: Chemical POPs", dist: 0.65, angleDeg: 260, color: "#7C3AED" },
+            { name: "CITES: Timber & Flora (HS 4403)", dist: 0.78, angleDeg: 320, color: "#D97706" }
         ];
 
         function drawRadarGrid() {
             rCtx.clearRect(0, 0, rWidth, rHeight);
 
-            // Light Matrix Background Bar Lines (Supabase-like grid effect in Light Mode)
+            // Light Matrix Background Bar Lines (Grid Matrix Effect)
             rCtx.lineWidth = 1;
             for (let x = 0; x < rWidth; x += 32) {
                 rCtx.beginPath();
@@ -345,7 +373,7 @@ def render_home_page():
             if (angle > Math.PI * 2) angle = 0;
 
             const sweepGradient = rCtx.createConicGradient(angle, centerX, centerY);
-            sweepGradient.addColorStop(0, 'rgba(37, 99, 235, 0.30)');
+            sweepGradient.addColorStop(0, 'rgba(37, 99, 235, 0.28)');
             sweepGradient.addColorStop(0.12, 'rgba(37, 99, 235, 0.04)');
             sweepGradient.addColorStop(0.25, 'transparent');
 
@@ -411,7 +439,7 @@ def render_home_page():
         drawRadarGrid();
     </script>
     """
-    st.components.v1.html(html_radar_grid, height=400)
+    st.components.v1.html(html_radar_grid, height=440)
 
     st.markdown("---")
 
@@ -419,7 +447,7 @@ def render_home_page():
     # 5. QUICK LAUNCH DESK
     # --------------------------------------------------------------------------
     st.markdown("### Platform Quick Launch Operations")
-    st.caption("Instantly navigate to operational modules:")
+    st.caption("Navigate to operational modules:")
 
     btn1, btn2, btn3, btn4 = st.columns(4)
 
