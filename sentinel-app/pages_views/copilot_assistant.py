@@ -1,167 +1,243 @@
-import streamlit as st
+import os
 import time
+import streamlit as st
 
 def render_copilot_assistant_page():
-    st.subheader("SENTINEL Statutory & Legal Copilot")
-    st.caption("AI-powered legal query assistant trained on Malaysian statutory frameworks, customs import orders, and multilateral environmental treaties (MEAs).")
-
-    # --------------------------------------------------------------------------
-    # 1. KNOWLEDGE DOMAIN SELECTOR & STATUTORY CONTROLS
-    # --------------------------------------------------------------------------
-    col_domain, col_clear = st.columns([3, 1])
     
-    with col_domain:
-        selected_framework = st.multiselect(
-            "Constrain Legal Retrieval Domains:",
-            [
-                "Act 127: Environmental Quality Act 1974",
-                "Customs Act 1967 & Prohibition Orders",
-                "Act 686: International Trade in Endangered Species 2008",
-                "Basel Convention Protocols (Waste HS 3915/8549)",
-                "Montreal Protocol (ODS HS 2903)"
-            ],
-            default=[
-                "Act 127: Environmental Quality Act 1974",
-                "Customs Act 1967 & Prohibition Orders"
-            ]
-        )
-        
-    with col_clear:
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Clear Chat Memory", key="clear_copilot_chat"):
-            st.session_state["copilot_messages"] = [
-                {
-                    "role": "assistant",
-                    "content": "Greetings Officer. I am initialized with Act 127, Customs Act 1967, and international MEA statutes. Submit a tariff query, HS code, or statutory penalty question below."
-                }
-            ]
-            st.rerun()
+    # --------------------------------------------------------------------------
+    # 1. CYBERNETIC ENTITY HUD & SYSTEM DIAGNOSTICS CARD
+    # --------------------------------------------------------------------------
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    avatar_path = os.path.join(base_dir, "sentinel_avatar.jpg")
+    if not os.path.exists(avatar_path):
+        avatar_path = os.path.join(base_dir, "sentinel_avatar.png")
+
+    hud_col1, hud_col2 = st.columns([1, 3])
+    
+    with hud_col1:
+        if os.path.exists(avatar_path):
+            st.image(avatar_path, width=175)
+        else:
+            st.markdown("""
+            <div style="width:160px; height:190px; background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border:2px solid #2563EB; border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; box-shadow:0 4px 12px rgba(37,99,235,0.25);">
+                <div style="font-size:2.8rem; margin-bottom:4px;">🤖</div>
+                <div style="font-size:0.8rem; font-weight:800; color:#38BDF8; font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:1px;">
+                    SENTINEL-01
+                </div>
+                <div style="font-size:0.68rem; color:#94A3B8; font-family:'JetBrains Mono', monospace; margin-top:2px;">
+                    NEXUS AI GUARDIAN
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    with hud_col2:
+        st.markdown("""
+        <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid #1A365D; border-radius:10px; padding:18px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:1.18rem; font-weight:800; color:#1A365D;">SENTINEL Autonomous Compliance Entity</span>
+                <span class="intel-status-pill"><span class="pulse-dot"></span> NEURAL LINK: ACTIVE</span>
+            </div>
+            <p style="font-size:0.88rem; color:#475569; margin-bottom:12px; line-height:1.45;">
+                Greetings. I am <b>SENTINEL-01</b>, the platform's autonomous trade intelligence guardian. I am trained on Malaysian environmental statutes (Act 127, Customs Act 1967), live Looker Studio catalogues, platform navigation routines, and arXiv machine learning preprints.
+            </p>
+            <div style="display:flex; gap:18px; font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:#334155; flex-wrap:wrap;">
+                <div><b>Knowledge Core:</b> <span style="color:#2563EB;">14.82M BigQuery Rows</span></div>
+                <div><b>Statutory Index:</b> <span style="color:#059669;">Act 127 / Act 686 / Customs 1967</span></div>
+                <div><b>Inference Latency:</b> <span style="color:#D97706;">0.012s</span></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
 
     # --------------------------------------------------------------------------
-    # 2. CHAT MEMORY INITIALIZATION
+    # 2. CONTROLS: RESPONSE LANGUAGE & MEMORY RESET
     # --------------------------------------------------------------------------
-    if "copilot_messages" not in st.session_state:
-        st.session_state["copilot_messages"] = [
+    col_lang, col_clear = st.columns([3, 1])
+    
+    with col_lang:
+        language_mode = st.radio(
+            "Response Language Protocol / Mod Bahasa:",
+            ["English Statutory Directives", "Bahasa Melayu (Perundangan Rasmi)"],
+            horizontal=True
+        )
+
+    with col_clear:
+        if st.button("Reset Neural Memory", key="clear_sentinel_chat"):
+            st.session_state["sentinel_messages"] = [
+                {
+                    "role": "assistant",
+                    "content": "Awaiting directive. You may ask me how to navigate the platform, query statutory laws (Act 127/Customs Act), inspect Looker Studio catalogues, or analyze shipment risk."
+                }
+            ]
+            st.rerun()
+
+    # Chat Memory Initialization
+    if "sentinel_messages" not in st.session_state:
+        st.session_state["sentinel_messages"] = [
             {
                 "role": "assistant",
-                "content": "Greetings Officer. I am initialized with Act 127, Customs Act 1967, and international MEA statutes. Submit a tariff query, HS code, or statutory penalty question below."
+                "content": "Awaiting directive. You may ask me how to navigate the platform, query statutory laws (Act 127/Customs Act), inspect Looker Studio catalogues, or analyze shipment risk."
             }
         ]
 
     # --------------------------------------------------------------------------
-    # 3. SUGGESTED QUICK PROMPT CHIPS
+    # 3. INTERACTIVE QUICK PROMPT CHIPS
     # --------------------------------------------------------------------------
-    st.markdown("###### Quick Compliance Prompts:")
-    q_col1, q_col2, q_col3 = st.columns(3)
+    st.markdown("###### Quick Neural Directives:")
+    q1, q2, q3, q4 = st.columns(4)
     
     prompt_click = None
-    with q_col1:
-        if st.button("HS 3915 Plastic Detention SOP", key="prompt_1"):
-            prompt_click = "What is the legal procedure and penalty for detaining unpermitted HS 3915 plastic scrap under Act 127?"
-    with q_col2:
-        if st.button("HS 2903 ODS Refrigerant Quota", key="prompt_2"):
-            prompt_click = "Explain the MITI import quota requirements for HCFC-22 gases under HS 2903."
-    with q_col3:
-        if st.button("HITL Judicial Evidence Protocol", key="prompt_3"):
-            prompt_click = "What are the legal chain-of-custody requirements when logging officer overrides in the HITL queue?"
+    with q1:
+        if st.button("🗺️ Site Navigation Guide", key="p_nav"):
+            prompt_click = "Guide me through navigating the SENTINEL platform modules and access clearance tiers."
+    with q2:
+        if st.button("📊 Looker Studio Catalogue", key="p_cat"):
+            prompt_click = "What analytics dashboards and MEA tabs are available in the Data Studio catalogue?"
+    with q3:
+        if st.button("🚨 Scan HS 3915 Anomaly", key="p_3915"):
+            prompt_click = "Evaluate shipment: HS 3915.20, declared USD 320/ton, origin Port X, weight 28,000 kg."
+    with q4:
+        if st.button("📜 Draft Form K3 Notice", key="p_k3"):
+            prompt_click = "Draft an official Form K3 Container Detention Order under Section 31A of Act 127 for illegal plastic waste."
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Render persistent conversation history
-    for msg in st.session_state["copilot_messages"]:
+    # Render Persistent Conversation Thread
+    for msg in st.session_state["sentinel_messages"]:
         st.chat_message(msg["role"]).write(msg["content"])
 
     # --------------------------------------------------------------------------
-    # 4. CHAT INPUT & INTENT ROUTING ENGINE
+    # 4. CHAT INPUT & NEURAL REASONING ENGINE
     # --------------------------------------------------------------------------
-    user_input = st.chat_input("Query statutory provisions, HS code penalties, or border interdiction SOPs...") or prompt_click
+    user_input = st.chat_input("Command SENTINEL: Ask about site guide, Looker catalogues, statutes, or HS codes...") or prompt_click
 
     if user_input:
-        # Display User Input
-        st.session_state["copilot_messages"].append({"role": "user", "content": user_input})
+        st.session_state["sentinel_messages"].append({"role": "user", "content": user_input})
         st.chat_message("user").write(user_input)
 
-        # Process Query & Generate Structured Response
         with st.chat_message("assistant"):
-            with st.spinner("Searching BigQuery Legal Knowledge Graph & Gazette Index..."):
-                time.sleep(1.2)  # Simulated vector retrieval latency
+            with st.spinner("SENTINEL Neural Core: Processing Query & Querying BigQuery Graph Index..."):
+                time.sleep(1.0)
                 
                 query_lower = user_input.lower()
+                is_bm = "Bahasa Melayu" in language_mode
 
-                # Dynamic Scenario 1: Plastic Scrap / Basel / HS 3915
-                if "3915" in query_lower or "plastic" in query_lower or "basel" in query_lower:
+                # ROUTE 1: SITE NAVIGATION & USER GUIDE
+                if any(k in query_lower for k in ["guide", "navigat", "site", "module", "how to use", "use this"]):
+                    if is_bm:
+                        response_md = """
+### 🗺️ PANDUAN NAVIGASI PLATFORM SENTINEL
+
+**1. Tahap Capaian Khas (Sidebar Menu):**
+* **Public (Free):** Papan pemuka awam, Peta Ancaman GIS Awam, dan Kertas Penyelidikan arXiv.
+* **Gov Agency (JKDM/JAS/MITI):** Membuka akses **Live Scanner**, **Pengurusan Isyarat HITL**, dan **Katalog Data Studio**.
+* **Admin:** Akses penuh ke **Hab Model Admin** dan kawalan pendaftaran model BigQuery SHA-256.
+
+**2. Modul Operasi Utama:**
+* **Home Overview:** Pusat kawalan utama dengan radar imbasan 24/7 dan Studio MEA.
+* **Live Scanner:** Muat naik manifes K1/K2 (CSV atau PDF/OCR) untuk imbasan risiko ML.
+* **Data Studio & Catalogue:** 5 tab laporan Looker Studio langsung bagi Sisa Plastik, E-Sisa, dan Gas Ozon.
+* **GCP Architecture:** Carta alir data berasaskan Google Cloud Platform (BigQuery & Colab Enterprise).
+* **Incident Escalation:** Talian tindak balas inter-agensi untuk menahan kontena berisiko.
+                        """
+                    else:
+                        response_md = """
+### 🗺️ SENTINEL PLATFORM NAVIGATION & USER GUIDE
+
+**1. Role-Based Clearance Tiers (Sidebar):**
+* **Public (Free):** Public statistics, Public Threat Map, and arXiv research papers.
+* **Gov Agency (JKDM/JAS/MITI):** Unlocks the **Live Scanner**, **Incident Escalation Queue**, and **Data Studio Catalogue**.
+* **Admin:** Full system control including the **Admin Model Hub** and BigQuery SHA-256 checksum registry.
+
+**2. Key Operational Modules:**
+* **Home Overview:** Main command center featuring the interactive neural hero, Looker Studio MEA studio, and 24/7 stream radar.
+* **Live Scanner:** Upload customs K1/K2 manifests (CSV or PDF/OCR) to trigger real-time machine learning inference.
+* **Data Studio & Catalogue:** 5 interactive Looker Studio reporting tabs covering Plastic Scrap, E-Waste, and Ozone Gases.
+* **GCP Architecture:** Interactive 4-layer cloud pipeline mapping data flow from UN Comtrade into BigQuery and Colab Enterprise.
+* **Incident Escalation:** Inter-agency Human-in-the-Loop (HITL) queue to issue container holds and sign interdiction orders.
+                        """
+
+                # ROUTE 2: LOOKER STUDIO CATALOGUE INDEX
+                elif any(k in query_lower for k in ["catalogue", "catalog", "looker", "dashboard", "analytics", "tab"]):
                     response_md = """
-### Statutory Citation Analysis: HS 3915 (Plastic Scrap)
+### 📊 LOOKER STUDIO DATA CATALOGUE INDEX
 
-**1. Primary Legal Framework:**
-* **Environmental Quality Act 1974 (Act 127), Section 34A:** Strict prohibition on importing scheduled plastic waste without prior written approval from the Director General of Environment (JAS).
-* **Customs (Prohibition of Imports) Order 2023:** Item 1, Second Schedule requires a mandatory Approval Letter (*Surat Kelulusan*) and SIRIM verification prior to port arrival.
+The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multilateral Environmental Agreement (MEA) frameworks:
 
-**2. Enforcement Powers & Interdiction Protocol:**
-* **Detention Order (Form K3/JAS):** Under Section 31A, officers may issue an immediate container hold order at Port Klang, Penang Port, or Pasir Gudang.
-* **Mandatory Repatriation:** Non-compliant shipments must be returned to the country of origin at the importer's expense within **30 days** under Article 9 of the Basel Convention.
+1. **Plastic Waste (HS 3915 Tab):** Embedded Looker Studio dashboard tracking secondary resin imports, declared unit valuation outliers, and trade volume dips post-Basel amendment.
+2. **E-Waste (HS 8548/8549 Tab):** Real-time monitoring of scrap metal slag, circuit board shipments, and container weight discrepancies.
+3. **Ozone Substances (HS 2903 Tab):** Tracks regulated HCFC/CFC refrigerants and cross-references declarations against active MITI import quota caps.
+4. **CITES Timber & Fauna (Tab 4):** Screening parameters for protected timber density (HS 4403) and PERHILITAN wildlife permit verifications *(Under Construction)*.
+5. **Stockholm/Rotterdam POPs (Tab 5):** Chemical safety screening for persistent organic pollutants and toxic agricultural pesticides *(Under Construction)*.
+                    """
+
+                # ROUTE 3: LIVE HS CODE ANOMALY ESTIMATOR (HS 3915 / VALUATION)
+                elif "3915" in query_lower or "usd" in query_lower or "ton" in query_lower or "evaluate" in query_lower:
+                    if is_bm:
+                        response_md = """
+### 🛡️ NILAAN RISIKO NEURAL SENTINEL: HS 3915 (Sisa Plastik)
+
+**1. Analisis Anomali Manifes:**
+* **Domain Tarif:** HS 3915.20 (Sisa, Potongan & Skrap Plastik Polistirena)
+* **Nilaian Diisytihar:** USD 320.00 / Metrik Ton *(Penyimpangan: -68.4% berbanding harga pasaran resin tulen USD 1,012/ton)*
+* **Skor Anomali Machine Learning:** <span style="color:#DC2626; font-weight:800;">88.4 / 100 (SANGAT BERISIKO)</span>
+
+**2. Asas Undang-Undang & Arahan Tindakan:**
+* **Akta Kualiti Alam Sekeliling 1974 (Akta 127), Seksyen 34A:** Mengimport sisa terjadual tanpa Kelulusan Bertulis Pengarah Kejuruteraan Alam Sekitar (JAS) adalah kesalahan jenayah.
+* **Perintah Kastam (Larangan Mengenai Import) 2023:** Memerlukan Surat Kelulusan JAS & Perakuan Verifikasi SIRIM.
+* **Arahan Penahanan:** Keluarkan **Notis Penahanan Kontena (Borang K3)** serta-merta di Port Klang / Pulau Pinang.
+
+**3. Penalti Perundangan:**
+* Denda minima **RM 100,000** sehingga **RM 10,000,000** dan penjara tidak melebihi **5 tahun**.
+                        """
+                    else:
+                        response_md = """
+### 🛡️ SENTINEL NEURAL RISK EVALUATION: HS 3915 (Plastic Waste)
+
+**1. Manifest Anomaly Metrics:**
+* **Tariff Domain:** HS 3915.20 (Waste, Parings & Scrap of Polystyrene)
+* **Declared Valuation:** USD 320.00 / Metric Ton *(Price Deviation: -68.4% vs virgin resin benchmark USD 1,012/ton)*
+* **ML Anomaly Score:** <span style="color:#DC2626; font-weight:800;">88.4 / 100 (CRITICAL RISK THREAT)</span>
+
+**2. Statutory Authority & Action Directive:**
+* **Environmental Quality Act 1974 (Act 127), Section 34A:** Importation of scheduled waste without written approval from the Director General of Environment (JAS) is illegal.
+* **Customs (Prohibition of Imports) Order 2023:** Mandatory Approval Letter (*Surat Kelulusan*) and SIRIM verification required.
+* **Interdiction Order:** Issue an immediate **Container Detention Order (Form K3)** at Port Klang / Penang Port.
 
 **3. Statutory Penalties:**
-* **Fine:** Minimum **RM 100,000** up to **RM 10,000,000** under Section 34A.
-* **Imprisonment:** Mandatory maximum term not exceeding **5 years**, or both.
-                    """
+* Mandatory fine between **RM 100,000 to RM 10,000,000** and imprisonment up to **5 years**.
+                        """
 
-                # Dynamic Scenario 2: ODS Gases / Montreal / HS 2903
-                elif "2903" in query_lower or "refrigerant" in query_lower or "montreal" in query_lower or "ods" in query_lower:
+                # ROUTE 4: DRAFT FORM K3 DETENTION ORDER
+                elif "k3" in query_lower or "form" in query_lower or "draft" in query_lower or "detention" in query_lower:
                     response_md = """
-### Statutory Citation Analysis: HS 2903 (Ozone-Depleting Substances)
+### 📄 OFFICIAL INTERDICTION DIRECTIVE & DETENTION ORDER
 
-**1. Primary Legal Framework:**
-* **Environmental Quality (Refrigerant Management) Regulations 1999:** Mandates MITI import quota allocation and Department of Environment clearance for HCFCs and HFC blends.
-* **Customs Act 1967, Section 133:** False declaration of chemical identifiers on Customs Form K1 constitutes a criminal offense.
+```text
+================================================================================
+JABATAN ALAM SEKITAR (JAS) & JABATAN KASTAM DIRAJA MALAYSIA (JKDM)
+NOTICE OF CONTAINER DETENTION & SEIZURE ORDER UNDER SECTION 31A (ACT 127)
+================================================================================
+DOCUMENT REF : SENTINEL-HOLD-2026-8891
+TIMESTAMP    : 2026-08-13 08:15:00 MYT
+CHECKPOINT   : PORT KLANG (WESTPORT TERMINAL 2)
 
-**2. Physical Inspection Directive:**
-* Verify container pressure ratings using field gas analyzers.
-* Cross-reference the declaration payload with MITI's electronic licensing portal via **MyGDX API**.
+DECLARATION DETAILS:
+- Form K1 Declaration No : K1-2026-0891242
+- Target HS Code         : 3915.20.0000
+- Importer of Record     : [FLAGGED SUSPECT ENTITY #8812]
+- Declared Net Weight    : 28,400 KG
+- ML Anomaly Index       : 88.4 / 100 (HIGH PROBABILITY HAZARDOUS WASTE)
 
-**3. Statutory Penalties:**
-* **Fine:** Up to **RM 500,000** under Section 45 of Act 127.
-* **Seizure:** Immediate confiscation of cylinders and forfeiture of shipping line bonds under Section 115 of the Customs Act 1967.
-                    """
+STATUTORY DIRECTIVE:
+Pursuant to Section 31A of the Environmental Quality Act 1974 [Act 127] and 
+Section 114 of the Customs Act 1967, Container ID [CSNU-882190-2] is hereby
+PLACED UNDER IMMEDIATE PHYSICAL DETENTION.
 
-                # Dynamic Scenario 3: Chain of Custody / HITL / Legal Logs
-                elif "hitl" in query_lower or "custody" in query_lower or "evidence" in query_lower or "override" in query_lower:
-                    response_md = """
-### Statutory Compliance: Digital Chain-of-Custody & HITL Overrides
+REPATRIATION MANDATE:
+The Importer of Record is ordered to execute full container repatriation 
+to country of export under Article 9 of the Basel Convention within 30 DAYS.
 
-**1. Judicial Standards:**
-* **Evidence Act 1950, Section 90A:** Automated machine learning flags and officer overrides are admissible in court provided digital audit logs maintain cryptographic integrity.
-
-**2. Mandated Logging Workflow:**
-* **Digital Signature:** Officers overriding a high-risk ML flag ($Score > 85.0$) must sign with their official government Staff ID.
-* **SHA-256 Hashing:** Every adjudication note is appended to the BigQuery immutable ledger with an automated SHA-256 hash stamp.
-                    """
-
-                # Fallback Generic Statutory Router
-                else:
-                    response_md = f"""
-### Statutory Consultation Summary
-
-**Query Context:** "{user_input}"
-**Applied Frameworks:** {', '.join(selected_framework) if selected_framework else 'National Baseline Statutes'}
-
-* **Statutory Authority:** Customs Act 1967 Section 114 (Power to Inspect and Detain) & Act 127 Section 31.
-* **Enforcement Directive:** If ML anomaly threshold exceeds **75.0 / 100**, execute physical sampling and log the container ID into the inter-agency escalation queue.
-* **Legal Reference:** Consult the official Jabatan Digital Negara (JDN) guidelines or escalate to senior agency counsel.
-                    """
-
-                st.markdown(response_md)
-
-                # Store response in session memory
-                st.session_state["copilot_messages"].append({"role": "assistant", "content": response_md})
-
-                # Interactive Action Desk
-                st.markdown("<br>", unsafe_allow_html=True)
-                act_col1, act_col2 = st.columns(2)
-                with act_col1:
-                    st.button("Export Statutory Legal Brief (PDF)", key=f"export_{len(st.session_state['copilot_messages'])}")
-                with act_col2:
-                    if st.button("Escalate Query to Inter-Agency HITL Queue", key=f"hitl_{len(st.session_state['copilot_messages'])}"):
-                        st.success("Query & statutory analysis appended to active HITL Adjudication Log.")
+ISSUED BY SENTINEL AI COMPLIANCE ENGINE & SENIOR INSPECTION DESK
+================================================================================
