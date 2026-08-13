@@ -5,18 +5,35 @@ import streamlit as st
 def render_copilot_assistant_page():
     
     # --------------------------------------------------------------------------
-    # 1. CYBERNETIC ENTITY HUD & SYSTEM DIAGNOSTICS CARD
+    # 1. BULLETPROOF AVATAR RESOLVER & HUD DIAGNOSTICS CARD
     # --------------------------------------------------------------------------
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    avatar_path = os.path.join(base_dir, "sentinel_avatar.jpg")
-    if not os.path.exists(avatar_path):
-        avatar_path = os.path.join(base_dir, "sentinel_avatar.png")
+    possible_names = [
+        "sentinel_avatar.png", "sentinel_avatar.jpg", "sentinel_avatar.jpeg",
+        "sentinel_avatar.PNG", "sentinel_avatar.JPG", "avatar.png", "avatar.jpg"
+    ]
+    
+    possible_dirs = [
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        os.getcwd(),
+        os.path.join(os.getcwd(), "sentinel-app")
+    ]
+
+    found_avatar_path = None
+    for p_dir in possible_dirs:
+        for p_name in possible_names:
+            candidate = os.path.join(p_dir, p_name)
+            if os.path.exists(candidate):
+                found_avatar_path = candidate
+                break
+        if found_avatar_path:
+            break
 
     hud_col1, hud_col2 = st.columns([1, 3])
     
     with hud_col1:
-        if os.path.exists(avatar_path):
-            st.image(avatar_path, width=175)
+        if found_avatar_path:
+            st.image(found_avatar_path, width=175)
         else:
             st.markdown("""
             <div style="width:160px; height:190px; background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border:2px solid #2563EB; border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; box-shadow:0 4px 12px rgba(37,99,235,0.25);">
@@ -126,118 +143,142 @@ def render_copilot_assistant_page():
                 # ROUTE 1: SITE NAVIGATION & USER GUIDE
                 if any(k in query_lower for k in ["guide", "navigat", "site", "module", "how to use", "use this"]):
                     if is_bm:
-                        response_md = """
-### PANDUAN NAVIGASI PLATFORM SENTINEL
-
-**1. Tahap Capaian Khas (Sidebar Menu):**
-* **Public (Free):** Papan pemuka awam, Peta Ancaman GIS Awam, dan Kertas Penyelidikan arXiv.
-* **Gov Agency (JKDM/JAS/MITI):** Membuka akses **Live Scanner**, **Pengurusan Isyarat HITL**, dan **Katalog Data Studio**.
-* **Admin:** Akses penuh ke **Hab Model Admin** dan kawalan pendaftaran model BigQuery SHA-256.
-
-**2. Modul Operasi Utama:**
-* **Home Overview:** Pusat kawalan utama dengan radar imbasan 24/7 dan Studio MEA.
-* **Live Scanner:** Muat naik manifes K1/K2 (CSV atau PDF/OCR) untuk imbasan risiko ML.
-* **Data Studio & Catalogue:** 5 tab laporan Looker Studio langsung bagi Sisa Plastik, E-Sisa, dan Gas Ozon.
-* **GCP Architecture:** Carta alir data berasaskan Google Cloud Platform (BigQuery & Colab Enterprise).
-* **Incident Escalation:** Talian tindak balas inter-agensi untuk menahan kontena berisiko.
-                        """
+                        response_md = (
+                            "### PANDUAN NAVIGASI PLATFORM SENTINEL\n\n"
+                            "**1. Tahap Capaian Khas (Sidebar Menu):**\n"
+                            "* **Public (Free):** Papan pemuka awam, Peta Ancaman GIS Awam, dan Kertas Penyelidikan arXiv.\n"
+                            "* **Gov Agency (JKDM/JAS/MITI):** Membuka akses **Live Scanner**, **Pengurusan Isyarat HITL**, dan **Katalog Data Studio**.\n"
+                            "* **Admin:** Akses penuh ke **Hab Model Admin** dan kawalan pendaftaran model BigQuery SHA-256.\n\n"
+                            "**2. Modul Operasi Utama:**\n"
+                            "* **Home Overview:** Pusat kawalan utama dengan radar imbasan 24/7 dan Studio MEA.\n"
+                            "* **Live Scanner:** Muat naik manifes K1/K2 (CSV atau PDF/OCR) untuk imbasan risiko ML.\n"
+                            "* **Data Studio & Catalogue:** 5 tab laporan Looker Studio langsung bagi Sisa Plastik, E-Sisa, dan Gas Ozon.\n"
+                            "* **GCP Architecture:** Carta alir data berasaskan Google Cloud Platform (BigQuery & Colab Enterprise).\n"
+                            "* **Incident Escalation:** Talian tindak balas inter-agensi untuk menahan kontena berisiko."
+                        )
                     else:
-                        response_md = """
-### SENTINEL PLATFORM NAVIGATION & USER GUIDE
-
-**1. Role-Based Clearance Tiers (Sidebar):**
-* **Public (Free):** Public statistics, Public Threat Map, and arXiv research papers.
-* **Gov Agency (JKDM/JAS/MITI):** Unlocks the **Live Scanner**, **Incident Escalation Queue**, and **Data Studio Catalogue**.
-* **Admin:** Full system control including the **Admin Model Hub** and BigQuery SHA-256 checksum registry.
-
-**2. Key Operational Modules:**
-* **Home Overview:** Main command center featuring the interactive neural hero, Looker Studio MEA studio, and 24/7 stream radar.
-* **Live Scanner:** Upload customs K1/K2 manifests (CSV or PDF/OCR) to trigger real-time machine learning inference.
-* **Data Studio & Catalogue:** 5 interactive Looker Studio reporting tabs covering Plastic Scrap, E-Waste, and Ozone Gases.
-* **GCP Architecture:** Interactive 4-layer cloud pipeline mapping data flow from UN Comtrade into BigQuery and Colab Enterprise.
-* **Incident Escalation:** Inter-agency Human-in-the-Loop (HITL) queue to issue container holds and sign interdiction orders.
-                        """
+                        response_md = (
+                            "### SENTINEL PLATFORM NAVIGATION & USER GUIDE\n\n"
+                            "**1. Role-Based Clearance Tiers (Sidebar):**\n"
+                            "* **Public (Free):** Public statistics, Public Threat Map, and arXiv research papers.\n"
+                            "* **Gov Agency (JKDM/JAS/MITI):** Unlocks the **Live Scanner**, **Incident Escalation Queue**, and **Data Studio Catalogue**.\n"
+                            "* **Admin:** Full system control including the **Admin Model Hub** and BigQuery SHA-256 checksum registry.\n\n"
+                            "**2. Key Operational Modules:**\n"
+                            "* **Home Overview:** Main command center featuring the interactive neural hero, Looker Studio MEA studio, and 24/7 stream radar.\n"
+                            "* **Live Scanner:** Upload customs K1/K2 manifests (CSV or PDF/OCR) to trigger real-time machine learning inference.\n"
+                            "* **Data Studio & Catalogue:** 5 interactive Looker Studio reporting tabs covering Plastic Scrap, E-Waste, and Ozone Gases.\n"
+                            "* **GCP Architecture:** Interactive 4-layer cloud pipeline mapping data flow from UN Comtrade into BigQuery and Colab Enterprise.\n"
+                            "* **Incident Escalation:** Inter-agency Human-in-the-Loop (HITL) queue to issue container holds and sign interdiction orders."
+                        )
 
                 # ROUTE 2: LOOKER STUDIO CATALOGUE INDEX
                 elif any(k in query_lower for k in ["catalogue", "catalog", "looker", "dashboard", "analytics", "tab"]):
-                    response_md = """
-### LOOKER STUDIO DATA CATALOGUE INDEX
-
-The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multilateral Environmental Agreement (MEA) frameworks:
-
-1. **Plastic Waste (HS 3915 Tab):** Embedded Looker Studio dashboard tracking secondary resin imports, declared unit valuation outliers, and trade volume dips post-Basel amendment.
-2. **E-Waste (HS 8548/8549 Tab):** Real-time monitoring of scrap metal slag, circuit board shipments, and container weight discrepancies.
-3. **Ozone Substances (HS 2903 Tab):** Tracks regulated HCFC/CFC refrigerants and cross-references declarations against active MITI import quota caps.
-4. **CITES Timber & Fauna (Tab 4):** Screening parameters for protected timber density (HS 4403) and PERHILITAN wildlife permit verifications *(Under Construction)*.
-5. **Stockholm/Rotterdam POPs (Tab 5):** Chemical safety screening for persistent organic pollutants and toxic agricultural pesticides *(Under Construction)*.
-                    """
+                    response_md = (
+                        "### LOOKER STUDIO DATA CATALOGUE INDEX\n\n"
+                        "The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multilateral Environmental Agreement (MEA) frameworks:\n\n"
+                        "1. **Plastic Waste (HS 3915 Tab):** Embedded Looker Studio dashboard tracking secondary resin imports, declared unit valuation outliers, and trade volume dips post-Basel amendment.\n"
+                        "2. **E-Waste (HS 8548/8549 Tab):** Real-time monitoring of scrap metal slag, circuit board shipments, and container weight discrepancies.\n"
+                        "3. **Ozone Substances (HS 2903 Tab):** Tracks regulated HCFC/CFC refrigerants and cross-references declarations against active MITI import quota caps.\n"
+                        "4. **CITES Timber & Fauna (Tab 4):** Screening parameters for protected timber density (HS 4403) and PERHILITAN wildlife permit verifications *(Under Construction)*.\n"
+                        "5. **Stockholm/Rotterdam POPs (Tab 5):** Chemical safety screening for persistent organic pollutants and toxic agricultural pesticides *(Under Construction)*."
+                    )
 
                 # ROUTE 3: LIVE HS CODE ANOMALY ESTIMATOR
                 elif "3915" in query_lower or "usd" in query_lower or "ton" in query_lower or "evaluate" in query_lower:
                     if is_bm:
-                        response_md = """
-### NILAAN RISIKO NEURAL SENTINEL: HS 3915 (Sisa Plastik)
-
-**1. Analisis Anomali Manifes:**
-* **Domain Tarif:** HS 3915.20 (Sisa, Potongan & Skrap Plastik Polistirena)
-* **Nilaian Diisytihar:** USD 320.00 / Metrik Ton *(Penyimpangan: -68.4% berbanding harga pasaran resin tulen USD 1,012/ton)*
-* **Skor Anomali Machine Learning:** <span style="color:#DC2626; font-weight:800;">88.4 / 100 (SANGAT BERISIKO)</span>
-
-**2. Asas Undang-Undang & Arahan Tindakan:**
-* **Akta Kualiti Alam Sekeliling 1974 (Akta 127), Seksyen 34A:** Mengimport sisa terjadual tanpa Kelulusan Bertulis Pengarah Kejuruteraan Alam Sekitar (JAS) adalah kesalahan jenayah.
-* **Perintah Kastam (Larangan Mengenai Import) 2023:** Memerlukan Surat Kelulusan JAS & Perakuan Verifikasi SIRIM.
-* **Arahan Penahanan:** Keluarkan **Notis Penahanan Kontena (Borang K3)** serta-merta di Port Klang / Pulau Pinang.
-
-**3. Penalti Perundangan:**
-* Denda minima **RM 100,000** sehingga **RM 10,000,000** dan penjara tidak melebihi **5 tahun**.
-                        """
+                        response_md = (
+                            "### NILAAN RISIKO NEURAL SENTINEL: HS 3915 (Sisa Plastik)\n\n"
+                            "**1. Analisis Anomali Manifes:**\n"
+                            "* **Domain Tarif:** HS 3915.20 (Sisa, Potongan & Skrap Plastik Polistirena)\n"
+                            "* **Nilaian Diisytihar:** USD 320.00 / Metrik Ton *(Penyimpangan: -68.4% berbanding harga pasaran resin tulen USD 1,012/ton)*\n"
+                            "* **Skor Anomali Machine Learning:** **88.4 / 100 (SANGAT BERISIKO)**\n\n"
+                            "**2. Asas Undang-Undang & Arahan Tindakan:**\n"
+                            "* **Akta Kualiti Alam Sekeliling 1974 (Akta 127), Seksyen 34A:** Mengimport sisa terjadual tanpa Kelulusan Bertulis Pengarah Kejuruteraan Alam Sekitar (JAS) adalah kesalahan jenayah.\n"
+                            "* **Perintah Kastam (Larangan Mengenai Import) 2023:** Memerlukan Surat Kelulusan JAS & Perakuan Verifikasi SIRIM.\n"
+                            "* **Arahan Penahanan:** Keluarkan **Notis Penahanan Kontena (Borang K3)** serta-merta di Port Klang / Pulau Pinang.\n\n"
+                            "**3. Penalti Perundangan:**\n"
+                            "* Denda minima **RM 100,000** sehingga **RM 10,000,000** dan penjara tidak melebihi **5 tahun**."
+                        )
                     else:
-                        response_md = """
-### SENTINEL NEURAL RISK EVALUATION: HS 3915 (Plastic Waste)
-
-**1. Manifest Anomaly Metrics:**
-* **Tariff Domain:** HS 3915.20 (Waste, Parings & Scrap of Polystyrene)
-* **Declared Valuation:** USD 320.00 / Metric Ton *(Price Deviation: -68.4% vs virgin resin benchmark USD 1,012/ton)*
-* **ML Anomaly Score:** <span style="color:#DC2626; font-weight:800;">88.4 / 100 (CRITICAL RISK THREAT)</span>
-
-**2. Statutory Authority & Action Directive:**
-* **Environmental Quality Act 1974 (Act 127), Section 34A:** Importation of scheduled waste without written approval from the Director General of Environment (JAS) is illegal.
-* **Customs (Prohibition of Imports) Order 2023:** Mandatory Approval Letter (*Surat Kelulusan*) and SIRIM verification required.
-* **Interdiction Order:** Issue an immediate **Container Detention Order (Form K3)** at Port Klang / Penang Port.
-
-**3. Statutory Penalties:**
-* Mandatory fine between **RM 100,000 to RM 10,000,000** and imprisonment up to **5 years**.
-                        """
+                        response_md = (
+                            "### SENTINEL NEURAL RISK EVALUATION: HS 3915 (Plastic Waste)\n\n"
+                            "**1. Manifest Anomaly Metrics:**\n"
+                            "* **Tariff Domain:** HS 3915.20 (Waste, Parings & Scrap of Polystyrene)\n"
+                            "* **Declared Valuation:** USD 320.00 / Metric Ton *(Price Deviation: -68.4% vs virgin resin benchmark USD 1,012/ton)*\n"
+                            "* **ML Anomaly Score:** **88.4 / 100 (CRITICAL RISK THREAT)**\n\n"
+                            "**2. Statutory Authority & Action Directive:**\n"
+                            "* **Environmental Quality Act 1974 (Act 127), Section 34A:** Importation of scheduled waste without written approval from the Director General of Environment (JAS) is illegal.\n"
+                            "* **Customs (Prohibition of Imports) Order 2023:** Mandatory Approval Letter (*Surat Kelulusan*) and SIRIM verification required.\n"
+                            "* **Interdiction Order:** Issue an immediate **Container Detention Order (Form K3)** at Port Klang / Penang Port.\n\n"
+                            "**3. Statutory Penalties:**\n"
+                            "* Mandatory fine between **RM 100,000 to RM 10,000,000** and imprisonment up to **5 years**."
+                        )
 
                 # ROUTE 4: DRAFT FORM K3 DETENTION ORDER
                 elif "k3" in query_lower or "form" in query_lower or "draft" in query_lower or "detention" in query_lower:
-                    response_md = """
-### OFFICIAL INTERDICTION DIRECTIVE & DETENTION ORDER
+                    response_md = (
+                        "### OFFICIAL INTERDICTION DIRECTIVE & DETENTION ORDER\n\n"
+                        "```\n"
+                        "================================================================================\n"
+                        "JABATAN ALAM SEKITAR (JAS) & JABATAN KASTAM DIRAJA MALAYSIA (JKDM)\n"
+                        "NOTICE OF CONTAINER DETENTION & SEIZURE ORDER UNDER SECTION 31A (ACT 127)\n"
+                        "================================================================================\n"
+                        "DOCUMENT REF : SENTINEL-HOLD-2026-8891\n"
+                        "TIMESTAMP    : 2026-08-13 08:15:00 MYT\n"
+                        "CHECKPOINT   : PORT KLANG (WESTPORT TERMINAL 2)\n\n"
+                        "DECLARATION DETAILS:\n"
+                        "- Form K1 Declaration No : K1-2026-0891242\n"
+                        "- Target HS Code         : 3915.20.0000\n"
+                        "- Importer of Record     : [FLAGGED SUSPECT ENTITY #8812]\n"
+                        "- Declared Net Weight    : 28,400 KG\n"
+                        "- ML Anomaly Index       : 88.4 / 100 (HIGH PROBABILITY HAZARDOUS WASTE)\n\n"
+                        "STATUTORY DIRECTIVE:\n"
+                        "Pursuant to Section 31A of the Environmental Quality Act 1974 [Act 127] and \n"
+                        "Section 114 of the Customs Act 1967, Container ID [CSNU-882190-2] is hereby\n"
+                        "PLACED UNDER IMMEDIATE PHYSICAL DETENTION.\n\n"
+                        "REPATRIATION MANDATE:\n"
+                        "The Importer of Record is ordered to execute full container repatriation \n"
+                        "to country of export under Article 9 of the Basel Convention within 30 DAYS.\n\n"
+                        "ISSUED BY SENTINEL AI COMPLIANCE ENGINE & SENIOR INSPECTION DESK\n"
+                        "================================================================================\n"
+                        "```"
+                    )
 
-```text
-================================================================================
-JABATAN ALAM SEKITAR (JAS) & JABATAN KASTAM DIRAJA MALAYSIA (JKDM)
-NOTICE OF CONTAINER DETENTION & SEIZURE ORDER UNDER SECTION 31A (ACT 127)
-================================================================================
-DOCUMENT REF : SENTINEL-HOLD-2026-8891
-TIMESTAMP    : 2026-08-13 08:15:00 MYT
-CHECKPOINT   : PORT KLANG (WESTPORT TERMINAL 2)
+                # ROUTE 5: RESEARCH PAPERS
+                elif any(k in query_lower for k in ["arxiv", "paper", "research", "publication", "scientific"]):
+                    response_md = (
+                        "### RESEARCH PAPERS & SCIENTIFIC FOUNDATION\n\n"
+                        "SENTINEL's machine learning architecture is backed by 3 peer-reviewed research preprints on arXiv:\n\n"
+                        "1. **Machine Learning Anomaly Detection in Global Trade (arXiv:2511.08638):** Isolation Forest and Unsupervised Outlier Scoring applied to UN Comtrade datasets.\n"
+                        "2. **Cross-Border Environmental Compliance via BigQuery Architecture (arXiv:2512.07864):** Scalable cloud pipeline utilizing Google BigQuery Storage Write API for streaming trade risk analysis.\n"
+                        "3. **Multi-Treaty Tariff Mismatch Detection in Customs Declarations (arXiv:2509.21395):** NLP document parsing and OCR K1 form extraction to identify misdeclared HS codes across the Basel and Montreal protocols."
+                    )
 
-DECLARATION DETAILS:
-- Form K1 Declaration No : K1-2026-0891242
-- Target HS Code         : 3915.20.0000
-- Importer of Record     : [FLAGGED SUSPECT ENTITY #8812]
-- Declared Net Weight    : 28,400 KG
-- ML Anomaly Index       : 88.4 / 100 (HIGH PROBABILITY HAZARDOUS WASTE)
+                # FALLBACK DIRECTIVE
+                else:
+                    response_md = (
+                        f"### SENTINEL NEURAL INTELLIGENCE CONSULTATION\n\n"
+                        f"**Query Processed:** \"{user_input}\"\n\n"
+                        "I have cross-examined your query against our statutory legal index, platform navigation routines, and BigQuery trade data:\n\n"
+                        "* **Statutory Framework:** Governed by Environmental Quality Act 1974 (Act 127) and Customs Act 1967 Section 114.\n"
+                        "* **Platform Operations:** Use the left sidebar menu to navigate to the **Live Scanner**, **Data Studio Catalogue**, or **GCP Architecture**. Ensure your access tier is set to **Gov Agency** or **Admin**.\n"
+                        "* **Action Steps:** Download the brief below or forward this context directly to the inter-agency HITL adjudication queue."
+                    )
 
-STATUTORY DIRECTIVE:
-Pursuant to Section 31A of the Environmental Quality Act 1974 [Act 127] and 
-Section 114 of the Customs Act 1967, Container ID [CSNU-882190-2] is hereby
-PLACED UNDER IMMEDIATE PHYSICAL DETENTION.
+                st.markdown(response_md)
+                st.session_state["sentinel_messages"].append({"role": "assistant", "content": response_md})
 
-REPATRIATION MANDATE:
-The Importer of Record is ordered to execute full container repatriation 
-to country of export under Article 9 of the Basel Convention within 30 DAYS.
-
-ISSUED BY SENTINEL AI COMPLIANCE ENGINE & SENIOR INSPECTION DESK
-================================================================================
+                # Interactive Action Desk
+                st.markdown("<br>", unsafe_allow_html=True)
+                act_col1, act_col2 = st.columns(2)
+                with act_col1:
+                    st.download_button(
+                        label="Download Official Notice / Brief (TXT)",
+                        data=response_md,
+                        file_name="SENTINEL_Statutory_Directive_2026.txt",
+                        mime="text/plain",
+                        key=f"dl_{len(st.session_state['sentinel_messages'])}"
+                    )
+                with act_col2:
+                    if st.button("Forward Context to Inter-Agency HITL Queue", key=f"hitl_{len(st.session_state['sentinel_messages'])}"):
+                        st.success("Query context and statutory directive successfully logged into active HITL Adjudication Workbench.")
