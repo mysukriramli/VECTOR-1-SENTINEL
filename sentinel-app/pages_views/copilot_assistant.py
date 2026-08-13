@@ -5,19 +5,38 @@ import streamlit as st
 def render_copilot_assistant_page():
     
     # --------------------------------------------------------------------------
-    # 1. CYBERNETIC ENTITY HUD & SYSTEM DIAGNOSTICS CARD
+    # 1. BULLETPROOF MULTI-PATH AVATAR RESOLVER
     # --------------------------------------------------------------------------
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    avatar_path = os.path.join(base_dir, "sentinel_avatar.jpg")
-    if not os.path.exists(avatar_path):
-        avatar_path = os.path.join(base_dir, "sentinel_avatar.png")
+    possible_names = [
+        "sentinel_avatar.png", "sentinel_avatar.jpg", "sentinel_avatar.jpeg",
+        "sentinel_avatar.PNG", "sentinel_avatar.JPG", "sentinel_avatar.JPEG",
+        "avatar.png", "avatar.jpg"
+    ]
+    
+    possible_dirs = [
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),  # sentinel-app/
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), # repo root
+        os.getcwd(),  # working directory
+        os.path.join(os.getcwd(), "sentinel-app")
+    ]
+
+    found_avatar_path = None
+    for p_dir in possible_dirs:
+        for p_name in possible_names:
+            candidate = os.path.join(p_dir, p_name)
+            if os.path.exists(candidate):
+                found_avatar_path = candidate
+                break
+        if found_avatar_path:
+            break
 
     hud_col1, hud_col2 = st.columns([1, 3])
     
     with hud_col1:
-        if os.path.exists(avatar_path):
-            st.image(avatar_path, width=175)
+        if found_avatar_path:
+            st.image(found_avatar_path, width=175)
         else:
+            # Fallback Cybernetic Avatar HUD Frame if image is missing
             st.markdown("""
             <div style="width:160px; height:190px; background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border:2px solid #2563EB; border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; box-shadow:0 4px 12px rgba(37,99,235,0.25);">
                 <div style="font-size:2.8rem; margin-bottom:4px;">🤖</div>
@@ -172,7 +191,7 @@ The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multila
 5. **Stockholm/Rotterdam POPs (Tab 5):** Chemical safety screening for persistent organic pollutants and toxic agricultural pesticides *(Under Construction)*.
                     """
 
-                # ROUTE 3: LIVE HS CODE ANOMALY ESTIMATOR (HS 3915 / VALUATION)
+                # ROUTE 3: LIVE HS CODE ANOMALY ESTIMATOR
                 elif "3915" in query_lower or "usd" in query_lower or "ton" in query_lower or "evaluate" in query_lower:
                     if is_bm:
                         response_md = """
