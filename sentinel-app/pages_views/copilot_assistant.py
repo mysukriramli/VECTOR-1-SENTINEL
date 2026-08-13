@@ -5,38 +5,19 @@ import streamlit as st
 def render_copilot_assistant_page():
     
     # --------------------------------------------------------------------------
-    # 1. BULLETPROOF MULTI-PATH AVATAR RESOLVER
+    # 1. CYBERNETIC ENTITY HUD & SYSTEM DIAGNOSTICS CARD
     # --------------------------------------------------------------------------
-    possible_names = [
-        "sentinel_avatar.png", "sentinel_avatar.jpg", "sentinel_avatar.jpeg",
-        "sentinel_avatar.PNG", "sentinel_avatar.JPG", "sentinel_avatar.JPEG",
-        "avatar.png", "avatar.jpg"
-    ]
-    
-    possible_dirs = [
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),  # sentinel-app/
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), # repo root
-        os.getcwd(),  # working directory
-        os.path.join(os.getcwd(), "sentinel-app")
-    ]
-
-    found_avatar_path = None
-    for p_dir in possible_dirs:
-        for p_name in possible_names:
-            candidate = os.path.join(p_dir, p_name)
-            if os.path.exists(candidate):
-                found_avatar_path = candidate
-                break
-        if found_avatar_path:
-            break
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    avatar_path = os.path.join(base_dir, "sentinel_avatar.jpg")
+    if not os.path.exists(avatar_path):
+        avatar_path = os.path.join(base_dir, "sentinel_avatar.png")
 
     hud_col1, hud_col2 = st.columns([1, 3])
     
     with hud_col1:
-        if found_avatar_path:
-            st.image(found_avatar_path, width=175)
+        if os.path.exists(avatar_path):
+            st.image(avatar_path, width=175)
         else:
-            # Fallback Cybernetic Avatar HUD Frame if image is missing
             st.markdown("""
             <div style="width:160px; height:190px; background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border:2px solid #2563EB; border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; box-shadow:0 4px 12px rgba(37,99,235,0.25);">
                 <div style="font-size:2.8rem; margin-bottom:4px;">🤖</div>
@@ -108,16 +89,16 @@ def render_copilot_assistant_page():
     
     prompt_click = None
     with q1:
-        if st.button("🗺️ Site Navigation Guide", key="p_nav"):
+        if st.button("Site Navigation Guide", key="p_nav"):
             prompt_click = "Guide me through navigating the SENTINEL platform modules and access clearance tiers."
     with q2:
-        if st.button("📊 Looker Studio Catalogue", key="p_cat"):
+        if st.button("Looker Studio Catalogue", key="p_cat"):
             prompt_click = "What analytics dashboards and MEA tabs are available in the Data Studio catalogue?"
     with q3:
-        if st.button("🚨 Scan HS 3915 Anomaly", key="p_3915"):
+        if st.button("Scan HS 3915 Anomaly", key="p_3915"):
             prompt_click = "Evaluate shipment: HS 3915.20, declared USD 320/ton, origin Port X, weight 28,000 kg."
     with q4:
-        if st.button("📜 Draft Form K3 Notice", key="p_k3"):
+        if st.button("Draft Form K3 Notice", key="p_k3"):
             prompt_click = "Draft an official Form K3 Container Detention Order under Section 31A of Act 127 for illegal plastic waste."
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -146,7 +127,7 @@ def render_copilot_assistant_page():
                 if any(k in query_lower for k in ["guide", "navigat", "site", "module", "how to use", "use this"]):
                     if is_bm:
                         response_md = """
-### 🗺️ PANDUAN NAVIGASI PLATFORM SENTINEL
+### PANDUAN NAVIGASI PLATFORM SENTINEL
 
 **1. Tahap Capaian Khas (Sidebar Menu):**
 * **Public (Free):** Papan pemuka awam, Peta Ancaman GIS Awam, dan Kertas Penyelidikan arXiv.
@@ -162,7 +143,7 @@ def render_copilot_assistant_page():
                         """
                     else:
                         response_md = """
-### 🗺️ SENTINEL PLATFORM NAVIGATION & USER GUIDE
+### SENTINEL PLATFORM NAVIGATION & USER GUIDE
 
 **1. Role-Based Clearance Tiers (Sidebar):**
 * **Public (Free):** Public statistics, Public Threat Map, and arXiv research papers.
@@ -180,7 +161,7 @@ def render_copilot_assistant_page():
                 # ROUTE 2: LOOKER STUDIO CATALOGUE INDEX
                 elif any(k in query_lower for k in ["catalogue", "catalog", "looker", "dashboard", "analytics", "tab"]):
                     response_md = """
-### 📊 LOOKER STUDIO DATA CATALOGUE INDEX
+### LOOKER STUDIO DATA CATALOGUE INDEX
 
 The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multilateral Environmental Agreement (MEA) frameworks:
 
@@ -195,7 +176,7 @@ The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multila
                 elif "3915" in query_lower or "usd" in query_lower or "ton" in query_lower or "evaluate" in query_lower:
                     if is_bm:
                         response_md = """
-### 🛡️ NILAAN RISIKO NEURAL SENTINEL: HS 3915 (Sisa Plastik)
+### NILAAN RISIKO NEURAL SENTINEL: HS 3915 (Sisa Plastik)
 
 **1. Analisis Anomali Manifes:**
 * **Domain Tarif:** HS 3915.20 (Sisa, Potongan & Skrap Plastik Polistirena)
@@ -212,7 +193,7 @@ The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multila
                         """
                     else:
                         response_md = """
-### 🛡️ SENTINEL NEURAL RISK EVALUATION: HS 3915 (Plastic Waste)
+### SENTINEL NEURAL RISK EVALUATION: HS 3915 (Plastic Waste)
 
 **1. Manifest Anomaly Metrics:**
 * **Tariff Domain:** HS 3915.20 (Waste, Parings & Scrap of Polystyrene)
@@ -231,7 +212,7 @@ The **Data Studio & Catalogue** module hosts 5 specialized tabs across 4 Multila
                 # ROUTE 4: DRAFT FORM K3 DETENTION ORDER
                 elif "k3" in query_lower or "form" in query_lower or "draft" in query_lower or "detention" in query_lower:
                     response_md = """
-### 📄 OFFICIAL INTERDICTION DIRECTIVE & DETENTION ORDER
+### OFFICIAL INTERDICTION DIRECTIVE & DETENTION ORDER
 
 ```text
 ================================================================================
